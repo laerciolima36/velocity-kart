@@ -5,8 +5,8 @@ import Navbar from 'react-bootstrap/Navbar';
 const Menu = () => {
     return (
         <>
-            <Navbar className="bg-body-tertiary">
-                <Container>
+            <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
+                <Container fluid>
                     <Navbar.Brand href="#home">
                         <img
                             alt=""
