@@ -15,7 +15,7 @@ const Menu = () => {
                             height="30"
                             className="d-inline-block align-top"
                         />
-                        React Bootstrap
+                       Velocity Kart
                     </Navbar.Brand>
                 </Container>
             </Navbar>
