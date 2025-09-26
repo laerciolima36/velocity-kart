@@ -7,10 +7,8 @@ const Aluguel = () => {
     return (
         <div>
             <Menu />
-            <h1>Aluguel Page</h1>
             <ItemAluguel nome={"carlos"} />
             <NovoAluguel />
-           
         </div>
     );
 };

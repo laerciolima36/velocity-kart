@@ -10,9 +10,8 @@ import Form from 'react-bootstrap/Form'
 const FormContrato = () => {
 
     return (
-        <div>
-            <Container>
-                <Card >
+        <div className="container-fluid">
+                <Card className='m-4'>
                     <Card.Header>Contrato: </Card.Header>
                     <Card.Body>
                         <Form>
@@ -68,9 +67,6 @@ const FormContrato = () => {
                     </Card.Body>
 
                 </Card>
-            </Container>
-
-
         </div>
     );
 };

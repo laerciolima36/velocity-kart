@@ -1,15 +1,27 @@
-import { useState } from 'react'
-import Contratos from './pages/Contratos'
+import { Route, Routes } from 'react-router-dom';
+import LoginPage from './components/LoginPage/LoginPage';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import CadastroProduto from './components/CadastroProduto/CadastroProduto';
+import NotFound from './components/NotFound/NotFound';
+import Aluguel from './pages/Aluguel';
+import Contratos from './pages/Contratos';
+import Relatorio from './pages/Relatorio';
+import './App.css';
+import Brinquedos from './pages/Brinquedos';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-    
-      <Contratos />
-    </>
-  )
+    <div>
+      <Routes>
+        <Route path="/" element={<Aluguel />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/brinquedos" element={<Brinquedos />} />
+        <Route path="/contratos" element={<Contratos />} />
+        <Route path="/relatorios" element={<Relatorio />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;

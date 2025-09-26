@@ -19,9 +19,8 @@ const ItemAluguel = ({ nome }) => {
 
 
     return (
-        <div>
-            <Container>
-                <Card className="text-center">
+        <div className="container-fluid">
+                <Card className="text-center m-4">
                     <Card.Header>Responsável: {nome}</Card.Header>
                     <Card.Body>
                         <Card.Title>Criança: {crianca} </Card.Title>
@@ -46,9 +45,6 @@ const ItemAluguel = ({ nome }) => {
                         <Button variant="primary">Pause</Button>
                     </Card.Footer>
                 </Card>
-            </Container>
-
-
         </div>
     );
 };
