@@ -4,7 +4,9 @@ import { Container } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+
+
+
 
 
 const ItemAluguel = ({ nome }) => {

@@ -149,7 +149,7 @@ export default function CadastroProduto() {
       )}
 
       <Card className='m-4'>
-        <Card.Header><FaDatabase style={{ marginRight: "8px" }}/>Cadastro de Produtos</Card.Header>
+        <Card.Header><FaDatabase style={{ marginRight: "8px" }}/>Cadastro de Brinquedos</Card.Header>
         <Card.Body>
           <Row className="justify-content-between mt-5 mb-3">
             <Col md={4}>
@@ -162,25 +162,21 @@ export default function CadastroProduto() {
               />
             </Col>
             <Col md={4} className="text-end">
-              <Button type="button" variant="primary" onClick={() => { setShowModal(true); setEditando(false); setProdutoAtual({ nome: "" }); setEditandoFoto(false) }}>Adicionar Novo Produto</Button>
+              <Button type="button" variant="primary" onClick={() => { setShowModal(true); setEditando(false); setProdutoAtual({ nome: "" }); setEditandoFoto(false) }}>Adicionar Novo Brinquedo</Button>
             </Col>
           </Row>
 
           <Table responsive striped bordered hover className="mt-3">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Código</th>
-                <th>Foto</th>
                 <th>Nome</th>
+                <th>Valor em Minutos</th>
                 {/* <th>Cor</th> */}
                 {/* <th>Tamanho</th> */}
                 {/* <th>Categoria</th> */}
                 {/* <th>Descrição</th> */}
-                <th>Preço de Custo</th>
-                <th>Preço de Venda</th>
-                <th>Quantidade em Estoque</th>
-                <th>Ações</th>
+                <th>Quantidade</th>
+                <th>Foto</th>
               </tr>
             </thead>
             <tbody>
@@ -224,7 +220,7 @@ export default function CadastroProduto() {
 
       <Modal className="modal modal-xl" show={showModal} onHide={() => setShowModal(false)} scrollable={true}>
         <Modal.Header closeButton>
-          <Modal.Title>{editando ? "Editar Produto" : "Novo Produto"}<h6>Insira os dados do Produto</h6></Modal.Title>
+          <Modal.Title>{editando ? "Editar Produto" : "Novo Brinquedo"}<h6>Insira os dados do Brinquedo</h6></Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
           <Form ref={formRef}>
@@ -249,7 +245,7 @@ export default function CadastroProduto() {
                 <Row className="justify-content-between mb-3">
                   <Col md={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Nome do Produto</Form.Label>
+                      <Form.Label>Nome do Brinquedo</Form.Label>
                       <Form.Control
                         type="text"
                         required
