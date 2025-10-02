@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
-
+import { pausarById, retomarById } from './ItemAluguelService';
 
 
 
@@ -12,6 +12,17 @@ import Button from 'react-bootstrap/Button';
 const ItemAluguel = ({ key, aluguel }) => {
     
     const handleTogglePausa = () => {
+
+        if (aluguel.pausado) {
+            retomarById(aluguel.id);
+            console.log('Retomar');
+            console.log(aluguel.id);
+        } else {
+            console.log('Pausar');
+            console.log(aluguel.id);
+            pausarById(aluguel.id);
+        }
+
         console.log(aluguel.pausado ? 'Retomar' : 'Pausar');
     };
 
@@ -40,7 +51,7 @@ const ItemAluguel = ({ key, aluguel }) => {
                     <Button
                         key={key}
                         variant="primary"
-                        onClick={handleTogglePausa}
+                        onClick={() => handleTogglePausa()}
                         className="ms-2"
                     >
                         {aluguel.pausado ? 'Retomar' : 'Pausar'}
