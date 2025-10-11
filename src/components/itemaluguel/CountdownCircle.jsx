@@ -1,31 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
 
-const CountdownCircle = ({ totalSeconds }) => {
-  const [secondsLeft, setSecondsLeft] = useState(totalSeconds);
+const CountdownCircle = ({ remainingSeconds, totalSeconds }) => {
+  const percentage = (remainingSeconds / totalSeconds) * 100;
 
-  useEffect(() => {
-    if (secondsLeft <= 0) return;
-
-    const interval = setInterval(() => {
-      setSecondsLeft(prev => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [secondsLeft]);
-
-  const percentage = (secondsLeft / totalSeconds) * 100;
+  // Formata MM:SS
+  const formatTime = (secs) => {
+    const minutes = Math.floor(secs / 60);
+    const seconds = secs % 60;
+    console.log(minutes);
+    console.log(seconds);
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2,'0')}`;
+  }
 
   return (
-    <div style={{ width: 150, height: 150 }}>
+    <div style={{ width: 100, height: 100 }}>
       <CircularProgressbar
         value={percentage}
-        text={`${secondsLeft}s`}
+        text={formatTime(remainingSeconds)}
         styles={buildStyles({
-          textColor: "#333",
-          pathColor: "#4caf50",
-          trailColor: "#d6d6d6"
+          textColor: "#ffffffff",
+          pathColor: "#a609b8ff",
+          trailColor: "#949292ff",
+          textSize: '20px',
         })}
       />
     </div>

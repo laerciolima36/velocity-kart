@@ -34,23 +34,26 @@ const ItemAluguel = ({ key, aluguel }) => {
         const mm = String(date.getMonth() + 1).padStart(2, '0');
         const hh = String(date.getHours()).padStart(2, '0');
         const min = String(date.getMinutes()).padStart(2, '0');
-        return `${dd}/${mm} ${hh}:${min}`;
+        // return `${dd}/${mm} ${hh}:${min}`;
+        return `${hh}:${min}`;
     };
 
     return (
-        <div className='bg-dark text-white p-3 rounded'>
-            <div>
-                {aluguel.nomeResponsavel} - 
-                {aluguel.nomeCrianca}
+        <div className='bg-dark p-3 rounded'>
+            <div className='text-white'>
+                👫 {aluguel.nomeResponsavel} 
             </div>
-            <div>
-                {formatDateTime(aluguel.inicio)}
+            <div className='text-white'>
+                👶 {aluguel.nomeCrianca}
+            </div>
+            <div className='text-secondary'>
+                🕑 {formatDateTime(aluguel.inicio)} 
                 <p></p>
             </div>
-            <div>
-                <CountdownCircle totalSeconds={Math.floor(aluguel.tempoRestante / 60)} />
+            <div className='text-center justify-content-center align-items-center d-flex flex-column'>
+                <CountdownCircle remainingSeconds={aluguel.tempoRestante} totalSeconds={aluguel.tempoEscolhido * 60} />
+                {/* Tempo Restante: {Math.floor(aluguel.tempoRestante / 60)} minutos e {aluguel.tempoRestante % 60} segundos */}
 
-                {Math.floor(aluguel.tempoRestante / 60)} minutos e {aluguel.tempoRestante % 60} segundos
             </div>
             {/* <Card className="text-center">
                 <Card.Header>{aluguel.nomeResponsavel}</Card.Header>
