@@ -5,12 +5,13 @@ import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import { pausarById, retomarById } from './ItemAluguelService';
-
+import './css/style.css';
+import CountdownCircle from '../itemaluguel/CountdownCircle';
 
 
 
 const ItemAluguel = ({ key, aluguel }) => {
-    
+
     const handleTogglePausa = () => {
 
         if (aluguel.pausado) {
@@ -26,10 +27,33 @@ const ItemAluguel = ({ key, aluguel }) => {
         console.log(aluguel.pausado ? 'Retomar' : 'Pausar');
     };
 
+    // Função para formatar data/hora no formato dd/mm hh:mm
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const hh = String(date.getHours()).padStart(2, '0');
+        const min = String(date.getMinutes()).padStart(2, '0');
+        return `${dd}/${mm} ${hh}:${min}`;
+    };
+
     return (
-        <div className="container-fluid">
-            <Card className="text-center m-4">
-                <Card.Header>Responsável: {aluguel.nomeResponsavel}</Card.Header>
+        <div className='bg-dark text-white p-3 rounded'>
+            <div>
+                {aluguel.nomeResponsavel} - 
+                {aluguel.nomeCrianca}
+            </div>
+            <div>
+                {formatDateTime(aluguel.inicio)}
+                <p></p>
+            </div>
+            <div>
+                <CountdownCircle totalSeconds={Math.floor(aluguel.tempoRestante / 60)} />
+
+                {Math.floor(aluguel.tempoRestante / 60)} minutos e {aluguel.tempoRestante % 60} segundos
+            </div>
+            {/* <Card className="text-center">
+                <Card.Header>{aluguel.nomeResponsavel}</Card.Header>
                 <Card.Body>
                     <Card.Title>Criança: {aluguel.nomeCrianca} </Card.Title>
                     <div className="position-absolute top-50 start-0 translate-middle-y">
@@ -57,7 +81,7 @@ const ItemAluguel = ({ key, aluguel }) => {
                         {aluguel.pausado ? 'Retomar' : 'Pausar'}
                     </Button>
                 </Card.Footer>
-            </Card>
+            </Card> */}
         </div>
     );
 };
