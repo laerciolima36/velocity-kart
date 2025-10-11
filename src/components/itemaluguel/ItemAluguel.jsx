@@ -7,8 +7,8 @@ import Button from 'react-bootstrap/Button';
 import { pausarById, retomarById } from './ItemAluguelService';
 import './css/style.css';
 import CountdownCircle from '../itemaluguel/CountdownCircle';
-
-
+import { FaPlay, FaPause } from "react-icons/fa";
+import { BsPauseCircle, BsPlayCircle } from "react-icons/bs";
 
 const ItemAluguel = ({ key, aluguel }) => {
 
@@ -40,21 +40,52 @@ const ItemAluguel = ({ key, aluguel }) => {
 
     return (
         <div className='bg-dark p-3 rounded'>
-            <div className='text-white'>
-                👫 {aluguel.nomeResponsavel} 
+            <div>
+
+            </div>
+            <div className='text-white justify-content-between align-items-center d-flex'>
+                👫 {aluguel.nomeResponsavel}
+                {aluguel.pausado ?
+                        <BsPlayCircle size={24}
+                            color="#f6ff00ff"
+                            style={{ transition: "transform 0.1s" }}
+                            onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+                            onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            onTouchStart={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+                            onTouchEnd={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            onClick={handleTogglePausa} />
+                        :
+                        <BsPauseCircle size={24}
+                            color="#ff00fbff"
+                            // role="button"
+                            // className="p-2 rounded-circle border bg-light"
+                            style={{ transition: "transform 0.1s" }}
+                            onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+                            onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            onTouchStart={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+                            onTouchEnd={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            onClick={handleTogglePausa} />}
             </div>
             <div className='text-white'>
                 👶 {aluguel.nomeCrianca}
             </div>
-            <div className='text-secondary'>
-                🕑 {formatDateTime(aluguel.inicio)} 
-                <p></p>
+            <div className='mt-4 text-center justify-content-center align-items-center d-flex flex-column'>
+                <CountdownCircle remainingSeconds={aluguel.tempoRestante} totalSeconds={aluguel.tempoEscolhido * 60} pausado={aluguel.pausado} />
             </div>
-            <div className='text-center justify-content-center align-items-center d-flex flex-column'>
-                <CountdownCircle remainingSeconds={aluguel.tempoRestante} totalSeconds={aluguel.tempoEscolhido * 60} />
-                {/* Tempo Restante: {Math.floor(aluguel.tempoRestante / 60)} minutos e {aluguel.tempoRestante % 60} segundos */}
+            <div className='text-end justify-content-end align-items-end d-flex flex-column mb-4'>
+                    
+                </div>
+                <div className='text-secondary text-center justify-content-center align-items-center d-flex flex-column mb-2' style={{ fontSize: '12px' }}>
+                🕑 {formatDateTime(aluguel.inicio)} - {aluguel.tempoEscolhido} min
+            </div>
+            <div className='text-secondary text-center justify-content-center align-items-center d-flex flex-column' style={{ fontSize: '12px' }}>
+                🚗 {aluguel.produto.nome} 💰 {aluguel.pago ? "Pago" : "Falta Pagar"}
+            </div>
 
-            </div>
+            {/* <div className='bg-secondary text-white text-center justify-content-center align-items-center d-flex flex-column p-2 rounded'>
+                {aluguel.pausado ? <FaPlay /> : <FaPause />}
+                {aluguel.pausado ? 'Retomar' : 'Pausar'}
+            </div> */}
             {/* <Card className="text-center">
                 <Card.Header>{aluguel.nomeResponsavel}</Card.Header>
                 <Card.Body>

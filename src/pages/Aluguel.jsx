@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Row, Col, Container } from 'react-bootstrap';
 import Menu from '../components/Menu/Menu';
-import ItemAluguel from '../components/ItemAluguel/ItemAluguel';
+import ItemAluguel from '../components/itemaluguel/ItemAluguel';
 import NovoAluguel from '../components/novoaluguel/NovoAluguel';
 import { useAlugueisContext } from '../store/AlugueisProvider/AlugueisProvider';
 import './css/style.css';
@@ -14,6 +14,20 @@ const Aluguel = () => {
     return (
         <div >
             <Menu />
+            <div className='mt-2 rounded text-white justify-content-center d-flex align-itens-center' style={{fontSize: "12px"}}> 
+                <div className='m-2' style={{fontSize: '12px'}}>
+                    <span>Legenda:</span>
+                </div>
+                <div className='m-2' style={{color: '#ff00fbff', fontSize: '12px'}}>
+                    <span>Iniciado</span>
+                </div>
+                <div className='m-2' style={{color: '#eeff00ff', fontSize: '12px'}}>
+                    <span>Pausado</span>
+                </div>
+                <div className='m-2' style={{color: '#ff0000ff', fontSize: '12px'}}>
+                    <span>Terminando</span>
+                </div>
+            </div>
 
             {!error && alugueis.length === 0 ? (
                 <div style={{ margin: '20px 0', textAlign: 'center' }}>

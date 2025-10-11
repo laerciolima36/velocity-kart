@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/logowhite.png';
+import logo from '../../assets/logovelo.png';
 import { logout } from '../../config/axiosInstance';
 
 function Menu() {
@@ -18,7 +18,7 @@ function Menu() {
             <img
               src={logo}
               alt="Logo"
-              style={{ width: '14rem', objectFit: 'contain' }}
+              style={{ width: '5rem', objectFit: 'contain' }}
             />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
