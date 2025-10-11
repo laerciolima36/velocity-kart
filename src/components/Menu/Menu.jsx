@@ -18,8 +18,11 @@ function Menu() {
             <img
               src={logo}
               alt="Logo"
-              style={{ width: '5rem', objectFit: 'contain' }}
+              style={{ width: '4rem', objectFit: 'contain' }}
             />
+          </Navbar.Brand>
+          <Navbar.Brand>
+            Aluguéis
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

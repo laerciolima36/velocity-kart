@@ -10,7 +10,7 @@ import CountdownCircle from '../itemaluguel/CountdownCircle';
 import { FaPlay, FaPause } from "react-icons/fa";
 import { BsPauseCircle, BsPlayCircle } from "react-icons/bs";
 
-const ItemAluguel = ({ key, aluguel }) => {
+const ItemAluguel = ({ aluguel }) => {
 
     const handleTogglePausa = () => {
 
