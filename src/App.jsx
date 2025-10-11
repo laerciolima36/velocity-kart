@@ -11,7 +11,7 @@ import Brinquedos from './pages/Brinquedos';
 
 function App() {
   return (
-    <div>
+    <div className="App">
       <Routes>
         <Route path="/" element={<Aluguel />} />
         <Route path="/login" element={<LoginPage />} />

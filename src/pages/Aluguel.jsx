@@ -4,13 +4,15 @@ import Menu from '../components/Menu/Menu';
 import ItemAluguel from '../components/ItemAluguel/ItemAluguel';
 import NovoAluguel from '../components/novoaluguel/NovoAluguel';
 import { useAlugueisContext } from '../store/AlugueisProvider/AlugueisProvider';
+import './css/style.css';
+
 
 const Aluguel = () => {
 
     const { alugueis = [], error } = useAlugueisContext();
 
     return (
-        <div>
+        <div >
             <Menu />
 
             {!error && alugueis.length === 0 ? (
