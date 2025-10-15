@@ -6,6 +6,7 @@ import NotFound from './components/NotFound/NotFound';
 import Aluguel from './pages/Aluguel';
 import Contratos from './pages/Contratos';
 import Relatorio from './pages/Relatorio';
+import Fila from './pages/Fila';
 import './App.css';
 import Brinquedos from './pages/Brinquedos';
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Aluguel />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/brinquedos" element={<Brinquedos />} />
+        <Route path="/fila" element={<Fila />} />
         <Route path="/contratos" element={<Contratos />} />
         <Route path="/relatorios" element={<Relatorio />} />
         <Route path="*" element={<NotFound />} />

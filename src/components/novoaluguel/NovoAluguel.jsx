@@ -8,6 +8,11 @@ import ProdutoDropdown from './ProdutoDropdown';
 import { criarAluguel } from './NovoAluguelService';
 import Alert from 'react-bootstrap/Alert';
 import Load from '../Load/Load';
+import { MdToys } from "react-icons/md";
+import './novoaluguel.css';
+import { getInformacoes } from '../InfoAluguel/InfoAluguelService';
+
+
 
 const NovoAluguel = () => {
     const [showModal, setShowModal] = useState(false);
@@ -64,6 +69,7 @@ function SimpleModal({ show, onClose }) {
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState(null);
     // const [showModal, setShowModal] = useState(show);
+    const [informacoes, setInformacoes] = useState(null);
 
     const handleSalvar = async () => {
 
@@ -76,7 +82,7 @@ function SimpleModal({ show, onClose }) {
             setLoading(true);
             criarAluguel(montarAluguel());
             setLoading(false);
-            onclose();
+            onClose();
         } catch (error) {
             setLoading(false);
             setErro(error);
@@ -107,6 +113,24 @@ function SimpleModal({ show, onClose }) {
             });
     }, []);
 
+    const carregarInfo = async () => {
+        try {
+            setLoading(true);
+            const info = await getInformacoes();
+            setInformacoes(info);
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            setErro(error);
+        }
+    };
+
+    useEffect(() => {
+        if (show) {
+            carregarInfo();
+        }
+    }, [show]);
+
     return (
         <>
             {loading && <Load />}
@@ -125,18 +149,20 @@ function SimpleModal({ show, onClose }) {
             }
             <Modal show={show} onHide={null} centered>
                 <Modal.Header
-                    className='bg-dark text-white border border-info border-bottom-0 border-2'
+                    // className='border border-info border-bottom-0 border-2'
                     closeButton
                     closeVariant="white"
                     onHide={onClose}
+                    style={{ backgroundColor: "violet", color: 'black' }}
                 >
-                    <Modal.Title>Novo Aluguel</Modal.Title>
+                    <Modal.Title><MdToys /> Novo Aluguel</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className='bg-dark text-white border border-info border-top-0 border-bottom-0 border-2'>
+                <Modal.Body>
                     <Form ref={formRef}>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label>Nome do Resposável</Form.Label>
+                            <Form.Label>Nome do Responsável</Form.Label>
                             <Form.Control
+                                className="input-violet"
                                 type="text"
                                 value={nomeResponsavel}
                                 onChange={(e) => setNomeResponsavel(e.target.value)}
@@ -144,8 +170,9 @@ function SimpleModal({ show, onClose }) {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label>Nome da Criança</Form.Label>
+                            <Form.Label>Nome da Criança/Jovem</Form.Label>
                             <Form.Control
+                                className="input-violet"
                                 type="text"
                                 value={nomeCrianca}
                                 onChange={(e) => setNomeCrianca(e.target.value)}
@@ -154,36 +181,46 @@ function SimpleModal({ show, onClose }) {
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>
                                 <Form.Label>Selecione o Brinquedo:</Form.Label>
-                                {/* <Form.Select aria-label="Selecione um produto" defaultValue="">
-                                <option value="" disabled>Selecione um produto</option>
-                                {produtos.map((produto) => (
-                                    <option key={produto.id} value={produto.id}>
-                                        {produto.nome}
-                                    </option>
-                                ))}
-                            </Form.Select> */}
-
-                                <ProdutoDropdown produtos={produtos} onSelect={(id) => setProdutoId(id)} />
-
                             </Form.Label>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Row>
-                                <Form.Label>Tempo Escolhido: {tempoEscolhido} </Form.Label>
-                            </Row>
 
-                            <Button variant="primary" onClick={() => setTempoEscolhido(15)}>15 min</Button>{' '}
-                            <Button variant="primary" onClick={() => setTempoEscolhido(30)}>30 min</Button>{' '}
-                            <Button variant="primary" onClick={() => setTempoEscolhido(tempoEscolhido + 5)}>+ 5 min</Button>{' '}
-                            <Button
-                                variant="primary"
-                                onClick={() => setTempoEscolhido(tempoEscolhido > 5 ? tempoEscolhido - 5 : 5)}
-                                disabled={tempoEscolhido <= 5}
-                            >
-                                - 5 min
-                            </Button>{' '}
-                            <br />
-                            <br />
+                        <ProdutoDropdown informacoes={informacoes} onSelect={(id) => setProdutoId(id)} />
+
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Row className='text-center mb-2'>
+                                <Form.Label>Tempo Escolhido: <strong><span style={{ fontSize: "26px" }}>{tempoEscolhido}</span></strong> minutos</Form.Label>
+                            </Row>
+                            <div className='text-center mb-2'>
+
+                                <Button className='mb-2' style={{ backgroundColor: "violet", color: "black" }} onClick={() => setTempoEscolhido(10)}>10 min</Button>{' '}
+                                <Button className='mb-2' style={{ backgroundColor: "violet", color: "black" }} onClick={() => setTempoEscolhido(15)}>15 min</Button>{' '}
+                                <Button className='mb-2' style={{ backgroundColor: "violet", color: "black" }} onClick={() => setTempoEscolhido(30)}>30 min</Button>{' '}<br />
+                                <Button className='mb-2' style={{ backgroundColor: "violet", color: "black" }} onClick={() => setTempoEscolhido(tempoEscolhido + 5)}>+ 5 min</Button>{' '}
+                                <Button
+                                    className='mb-2'
+                                    style={{ backgroundColor: "violet", color: "black" }}
+                                    onClick={() => setTempoEscolhido(tempoEscolhido > 5 ? tempoEscolhido - 5 : 5)}
+                                >
+                                    - 5 min
+                                </Button>{' '}
+                                <Button
+                                    className='mb-2'
+                                    style={{ backgroundColor: "violet", color: "black" }}
+                                    onClick={() => setTempoEscolhido(tempoEscolhido + 1)}
+                                >
+                                    + 1 min
+                                </Button>{' '}
+                                <Button
+                                    className='mb-2'
+                                    style={{ backgroundColor: "violet", color: "black" }}
+                                    onClick={() => setTempoEscolhido(tempoEscolhido > 1 ? tempoEscolhido - 1 : 1)}
+                                    disabled={tempoEscolhido <= 1}
+                                >
+                                    - 1 min
+                                </Button>{' '}
+                                <br />
+                                <br />
+                            </div>
 
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -200,7 +237,7 @@ function SimpleModal({ show, onClose }) {
                                 />
                             </div>
 
-                            <Form.Select aria-label="Default select example">
+                            <Form.Select className="input-violet" aria-label="Default select example">
                                 <option value="1">Pix</option>
                                 <option value="2">Débito</option>
                                 <option value="3">Crédito</option>
@@ -209,8 +246,8 @@ function SimpleModal({ show, onClose }) {
 
                     </Form>
                 </Modal.Body>
-                <Modal.Footer className='bg-dark text-white border border-info border-top-0 border-2'>
-                    <Button variant="secondary" onClick={handleSalvar}>Iniciar</Button>
+                <Modal.Footer>
+                    <Button variant="success" onClick={handleSalvar}>Iniciar</Button>
                 </Modal.Footer>
             </Modal>
         </>

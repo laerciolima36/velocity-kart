@@ -1,0 +1,4 @@
+.input-violet:focus {
+  border-color: violet !important;      /* borda violeta */
+  box-shadow: 0 0 0 0.2rem rgba(238, 130, 238, 0.5) !important; /* contorno violeta suave */
+}
