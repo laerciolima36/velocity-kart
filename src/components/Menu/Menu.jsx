@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/logovelo.png';
 import { logout } from '../../config/axiosInstance';
 
-function Menu() {
+function Menu({titulo}) {
   const handleLogout = () => {
     logout();
   };
@@ -22,7 +22,7 @@ function Menu() {
             />
           </Navbar.Brand>
           <Navbar.Brand>
-            Aluguéis
+            {titulo ? titulo : 'Velocity Kart'}
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

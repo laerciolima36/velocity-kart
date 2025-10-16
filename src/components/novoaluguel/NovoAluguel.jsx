@@ -61,7 +61,6 @@ function SimpleModal({ show, onClose }) {
     const [nomeResponsavel, setNomeResponsavel] = useState('');
     const [nomeCrianca, setNomeCrianca] = useState('');
     const [produtoId, setProdutoId] = useState(null);
-    const [produtos, setProdutos] = useState([]);
     const [pago, setPago] = useState(true);
     const [tempoEscolhido, setTempoEscolhido] = useState(15);
 
@@ -77,6 +76,28 @@ function SimpleModal({ show, onClose }) {
             formRef.current.reportValidity(); // mostra os erros nativos do navegador
             return;
         }
+
+        if (nomeResponsavel.trim() === '') {
+            setErro('O nome do responsável é obrigatório.');
+            return;
+        }
+
+        if(nomeCrianca.trim() === '') {
+            setErro('O nome da criança/jovem é obrigatório.');
+            return;
+        }
+
+        if (!produtoId) {
+            setErro('Selecione um brinquedo.');
+            return;
+        }
+
+        if (tempoEscolhido < 1) {
+            setErro('O tempo escolhido deve ser pelo menos 1 minuto.');
+            return;
+        }
+
+
 
         try {
             setLoading(true);
@@ -101,18 +122,6 @@ function SimpleModal({ show, onClose }) {
         };
     }
 
-    useEffect(() => {
-        // Simula uma chamada de API para buscar os produtos
-        listarProdutos()
-            .then((data) => {
-                setProdutos(data);
-                console.log("Produtos carregados:", data);
-            })
-            .catch((error) => {
-                console.error("Erro ao carregar produtos:", error);
-            });
-    }, []);
-
     const carregarInfo = async () => {
         try {
             setLoading(true);
@@ -128,6 +137,11 @@ function SimpleModal({ show, onClose }) {
     useEffect(() => {
         if (show) {
             carregarInfo();
+            setNomeResponsavel('');
+            setNomeCrianca('');
+            setProdutoId(null);
+            setTempoEscolhido(15);
+            setErro(null);
         }
     }, [show]);
 
@@ -138,6 +152,7 @@ function SimpleModal({ show, onClose }) {
             {
                 erro && (
                     <Alert
+                        xs={12} sm={6} md={4} lg={3}
                         variant="danger"
                         onClose={() => setErro(null)}
                         dismissible
@@ -147,7 +162,7 @@ function SimpleModal({ show, onClose }) {
                     </Alert>
                 )
             }
-            <Modal show={show} onHide={null} centered>
+            <Modal show={show} onHide={null} centered size="xl">
                 <Modal.Header
                     // className='border border-info border-bottom-0 border-2'
                     closeButton
@@ -160,7 +175,7 @@ function SimpleModal({ show, onClose }) {
                 <Modal.Body>
                     <Form ref={formRef}>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label>Nome do Responsável</Form.Label>
+                            <Form.Label><strong>Nome do Responsável</strong></Form.Label>
                             <Form.Control
                                 className="input-violet"
                                 type="text"
@@ -170,7 +185,7 @@ function SimpleModal({ show, onClose }) {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label>Nome da Criança/Jovem</Form.Label>
+                            <Form.Label><strong>Nome da Criança/Jovem</strong></Form.Label>
                             <Form.Control
                                 className="input-violet"
                                 type="text"
@@ -178,54 +193,56 @@ function SimpleModal({ show, onClose }) {
                                 onChange={(e) => setNomeCrianca(e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label>
-                                <Form.Label>Selecione o Brinquedo:</Form.Label>
-                            </Form.Label>
+                        <Form.Group controlId="exampleForm.ControlInput1">
+                            <Form.Label>Selecione o Brinquedo:</Form.Label>
                         </Form.Group>
 
                         <ProdutoDropdown informacoes={informacoes} onSelect={(id) => setProdutoId(id)} />
 
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group className="mt-3" controlId="exampleForm.ControlInput1">
                             <Row className='text-center mb-2'>
-                                <Form.Label>Tempo Escolhido: <strong><span style={{ fontSize: "26px" }}>{tempoEscolhido}</span></strong> minutos</Form.Label>
+                                <Form.Label>Tempo Escolhido: <strong><span style={{ fontSize: "26px", color: "red" }}>{tempoEscolhido}</span></strong> minutos</Form.Label>
                             </Row>
                             <div className='text-center mb-2'>
 
-                                <Button className='mb-2' style={{ backgroundColor: "violet", color: "black" }} onClick={() => setTempoEscolhido(10)}>10 min</Button>{' '}
-                                <Button className='mb-2' style={{ backgroundColor: "violet", color: "black" }} onClick={() => setTempoEscolhido(15)}>15 min</Button>{' '}
-                                <Button className='mb-2' style={{ backgroundColor: "violet", color: "black" }} onClick={() => setTempoEscolhido(30)}>30 min</Button>{' '}<br />
-                                <Button className='mb-2' style={{ backgroundColor: "violet", color: "black" }} onClick={() => setTempoEscolhido(tempoEscolhido + 5)}>+ 5 min</Button>{' '}
-                                <Button
-                                    className='mb-2'
-                                    style={{ backgroundColor: "violet", color: "black" }}
-                                    onClick={() => setTempoEscolhido(tempoEscolhido > 5 ? tempoEscolhido - 5 : 5)}
-                                >
-                                    - 5 min
-                                </Button>{' '}
-                                <Button
-                                    className='mb-2'
-                                    style={{ backgroundColor: "violet", color: "black" }}
-                                    onClick={() => setTempoEscolhido(tempoEscolhido + 1)}
-                                >
-                                    + 1 min
-                                </Button>{' '}
-                                <Button
-                                    className='mb-2'
-                                    style={{ backgroundColor: "violet", color: "black" }}
-                                    onClick={() => setTempoEscolhido(tempoEscolhido > 1 ? tempoEscolhido - 1 : 1)}
-                                    disabled={tempoEscolhido <= 1}
-                                >
-                                    - 1 min
-                                </Button>{' '}
-                                <br />
-                                <br />
+                                <Row md={3} xl={6} lg={3} xs={4} className='justify-content-center'>
+
+                                    <Button className='m-2' variant='secondary' onClick={() => setTempoEscolhido(10)}>10 min</Button>{' '}
+                                    <Button className='m-2' variant='secondary' onClick={() => setTempoEscolhido(15)}>15 min</Button>{' '}
+                                    <Button className='m-2' variant='secondary' onClick={() => setTempoEscolhido(20)}>20 min</Button>{' '}
+                                    <Button className='m-2' variant='secondary' onClick={() => setTempoEscolhido(30)}>30 min</Button>{' '}
+                                    <Button className='m-2' variant='secondary' onClick={() => setTempoEscolhido(tempoEscolhido + 5)}>+ 5 min</Button>{' '}
+                                    <Button
+                                        className='m-2'
+                                        variant='secondary'
+                                        onClick={() => setTempoEscolhido(tempoEscolhido > 5 ? tempoEscolhido - 5 : 5)}
+                                    >
+                                        - 5 min
+                                    </Button>{' '}
+                                    <Button
+                                        className='m-2'
+                                        variant='secondary'
+                                        onClick={() => setTempoEscolhido(tempoEscolhido + 1)}
+                                    >
+                                        + 1 min
+                                    </Button>{' '}
+                                    <Button
+                                        className='m-2'
+                                        variant='secondary'
+                                        onClick={() => setTempoEscolhido(tempoEscolhido > 1 ? tempoEscolhido - 1 : 1)}
+                                        disabled={tempoEscolhido <= 1}
+                                    >
+                                        - 1 min
+                                    </Button>{' '}
+                                    <br />
+                                    <br />
+                                </Row>
                             </div>
 
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group controlId="exampleForm.ControlInput1">
                             {/* //FALTA FAZER */}
-                            <div className='d-flex justify-content-between align-items-center mb-2'>
+                            <div className='d-flex justify-content-between align-items-center'>
                                 <Form.Label>Forma de Pagamento: </Form.Label>
                                 <Form.Check // prettier-ignore
                                     type="switch"

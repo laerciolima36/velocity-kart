@@ -14,7 +14,7 @@ import Load from "../Load/Load";
 export default function CadastroProduto() {
   const [produtos, setProdutos] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [produtoAtual, setProdutoAtual] = useState({ nome: "" });
+  const [produtoAtual, setProdutoAtual] = useState({ nome: "", quantidadeEstoque: 1 });
   const [editando, setEditando] = useState(false);
   const [editandoFoto, setEditandoFoto] = useState(false);
   const [foto, setFoto] = useState(null);
@@ -36,7 +36,7 @@ export default function CadastroProduto() {
   };
 
   useEffect(() => {
-    //carregarProdutos();
+    carregarProdutos();
   }, []);
 
   const handleSalvar = async () => {
@@ -169,20 +169,24 @@ export default function CadastroProduto() {
           <Table responsive striped bordered hover className="mt-3">
             <thead>
               <tr>
+                <th>Código</th>
+                <th>Foto</th>
                 <th>Nome</th>
                 <th>Valor em Minutos</th>
                 {/* <th>Cor</th> */}
                 {/* <th>Tamanho</th> */}
                 {/* <th>Categoria</th> */}
-                {/* <th>Descrição</th> */}
-                <th>Quantidade</th>
-                <th>Foto</th>
+                <th>Descrição</th>
+                {/* <th>Quantidade</th> */}
+                {/* <th>Foto</th> */}
+                <th>Opções</th>
+                
               </tr>
             </thead>
             <tbody>
               {produtosFiltrados.map((produto) => (
                 <tr key={produto.id}>
-                  <td>{produto.id}</td>
+                  {/* <td>{produto.id}</td> */}
                   <td>{produto.codigo}</td>
                   <td>
                     <img
@@ -203,10 +207,10 @@ export default function CadastroProduto() {
                   {/* <td>{produto.cor}</td> */}
                   {/* <td>{produto.tamanho}</td> */}
                   {/* <td>{produto.categoria}</td> */}
-                  {/* <td>{produto.descricao}</td> */}
-                  <td>R$ {produto.precoCusto.toFixed(2)}</td>
+                  {/* <td>R$ {produto.precoCusto.toFixed(2)}</td> */}
                   <td>R$ {produto.precoVenda.toFixed(2)}</td>
-                  <td>{produto.quantidadeEstoque}</td>
+                  <td>{produto.descricao}</td>
+                  {/* <td>{produto.quantidadeEstoque}</td> */}
                   <td>
                     <Button size="sm" variant="warning" onClick={() => handleEditar(produto)}>Editar</Button>{" "}
                     <Button size="sm" variant="danger" onClick={() => handleDeletar(produto.id)}>Excluir</Button>
@@ -220,7 +224,7 @@ export default function CadastroProduto() {
 
       <Modal className="modal modal-xl" show={showModal} onHide={() => setShowModal(false)} scrollable={true}>
         <Modal.Header closeButton>
-          <Modal.Title>{editando ? "Editar Produto" : "Novo Brinquedo"}<h6>Insira os dados do Brinquedo</h6></Modal.Title>
+          <Modal.Title>{editando ? "Editar Brinquedo" : "Novo Brinquedo"}<h6>Insira os dados do Brinquedo</h6></Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
           <Form ref={formRef}>
@@ -289,7 +293,7 @@ export default function CadastroProduto() {
                 </Row>
 
                 <Row className="justify-content-between mb-3">
-                  <Col md={3}>
+                  {/* <Col md={3}>
                     <Form.Group className="mb-3">
                       <Form.Label>Quantidade em Estoque</Form.Label>
                       <Form.Control
@@ -307,12 +311,13 @@ export default function CadastroProduto() {
                         }}
                       />
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
-                  <Col md={3}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Preço de Custo</Form.Label>
+                  {/* <Col md={3}>
+                    <Form.Group className="mb-3" >
+                      <Form.Label visuallyHidden>Preço de Custo</Form.Label>
                       <Form.Control
+                        visuallyHidden
                         type="text"
                         required
                         value={formatarParaBRL(produtoAtual.precoCusto || 0)}
@@ -327,11 +332,11 @@ export default function CadastroProduto() {
                         }}
                       />
                     </Form.Group>
-                  </Col>
+                  </Col> */}
 
                   <Col md={3}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Preço de Venda</Form.Label>
+                      <Form.Label>Valor do Minuto</Form.Label>
                       <Form.Control
                         type="text"
                         required
@@ -405,7 +410,7 @@ export default function CadastroProduto() {
             </Row>
 
 
-            {/* <Form.Group className="mb-3">
+            <Form.Group className="mb-3">
               <Form.Label>Descrição</Form.Label>
               <Form.Control
                 as="textarea"
@@ -413,7 +418,7 @@ export default function CadastroProduto() {
                 value={produtoAtual.descricao || ""}
                 onChange={(e) => setProdutoAtual({ ...produtoAtual, descricao: e.target.value })}
               />
-            </Form.Group> */}
+            </Form.Group>
 
           </Form>
 

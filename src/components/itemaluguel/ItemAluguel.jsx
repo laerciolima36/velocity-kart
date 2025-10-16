@@ -77,41 +77,6 @@ const ItemAluguel = ({ aluguel }) => {
             <div className='text-secondary text-center justify-content-center align-items-center d-flex flex-column' style={{ fontSize: '12px' }}>
                 🚗 {aluguel.produto.nome} 💰 {aluguel.pago ? "Pago" : "Falta Pagar"}
             </div>
-
-            {/* <div className='bg-secondary text-white text-center justify-content-center align-items-center d-flex flex-column p-2 rounded'>
-                {aluguel.pausado ? <FaPlay /> : <FaPause />}
-                {aluguel.pausado ? 'Retomar' : 'Pausar'}
-            </div> */}
-            {/* <Card className="text-center">
-                <Card.Header>{aluguel.nomeResponsavel}</Card.Header>
-                <Card.Body>
-                    <Card.Title>Criança: {aluguel.nomeCrianca} </Card.Title>
-                    <div className="position-absolute top-50 start-0 translate-middle-y">
-                        <Image
-                            src="https://images.tcdn.com.br/img/img_prod/394779/patinete_eletrico_ninebot_segway_300w_5_2mah_es2_gtsm1_4785_1_580b323516c6a09e00f874191fc0b971_20250701160847.jpg"
-                            roundedCircle
-                            width={120}
-                            height={120}
-                        />
-                    </div>
-
-                    <p><strong>Brinquedo:</strong> {aluguel.brinquedo}</p>
-                    <p><strong>Tempo Escolhido: </strong> {aluguel.tempoEscolhido} minutos</p>
-
-                    <p><strong>Pago: </strong> {aluguel.pago ? "Sim" : "Não"}</p>
-                </Card.Body>
-                <Card.Footer className="text-muted">
-                    Tempo Restante: {Math.floor(aluguel.tempoRestante / 60)} minutos e {aluguel.tempoRestante % 60} segundos
-                    <Button
-                        key={key}
-                        variant="primary"
-                        onClick={() => handleTogglePausa()}
-                        className="ms-2"
-                    >
-                        {aluguel.pausado ? 'Retomar' : 'Pausar'}
-                    </Button>
-                </Card.Footer>
-            </Card> */}
         </div>
     );
 };

@@ -2,3 +2,10 @@
   border-color: violet !important;      /* borda violeta */
   box-shadow: 0 0 0 0.2rem rgba(238, 130, 238, 0.5) !important; /* contorno violeta suave */
 }
+
+/* Para telas grandes (≥992px) */
+@media (min-width: 992px) {
+  .input-violet {
+    width: 400px; /* largura fixa para lg */
+  }
+}
