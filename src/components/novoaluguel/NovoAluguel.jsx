@@ -64,6 +64,9 @@ function SimpleModal({ show, onClose }) {
     const [pago, setPago] = useState(true);
     const [tempoEscolhido, setTempoEscolhido] = useState(15);
 
+    const [atendente, setAtendente] = useState();
+    const [formaPagamento, setFormaPagamento] = useState("Pix");
+
     const formRef = useRef();
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState(null);
@@ -82,7 +85,7 @@ function SimpleModal({ show, onClose }) {
             return;
         }
 
-        if(nomeCrianca.trim() === '') {
+        if (nomeCrianca.trim() === '') {
             setErro('O nome da criança/jovem é obrigatório.');
             return;
         }
@@ -96,8 +99,6 @@ function SimpleModal({ show, onClose }) {
             setErro('O tempo escolhido deve ser pelo menos 1 minuto.');
             return;
         }
-
-
 
         try {
             setLoading(true);
@@ -118,7 +119,9 @@ function SimpleModal({ show, onClose }) {
             pago: pago,
             produto: {
                 id: produtoId
-            }
+            },
+            atendente: atendente,
+            formaPagamento: formaPagamento
         };
     }
 
@@ -254,11 +257,24 @@ function SimpleModal({ show, onClose }) {
                                 />
                             </div>
 
-                            <Form.Select className="input-violet" aria-label="Default select example">
-                                <option value="1">Pix</option>
-                                <option value="2">Débito</option>
-                                <option value="3">Crédito</option>
+                            <Form.Select className="input-violet mb-2" aria-label="Default select example"
+                                value={formaPagamento}
+                                onChange={(e) => setFormaPagamento(e.target.value)}
+                            >
+                                <option>Pix</option>
+                                <option>Cartao de Crédito</option>
+                                <option>Cartao de Débito</option>
+                                <option>Dinheiro</option>
                             </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Atendente</Form.Label>
+                            <Form.Control
+                                className="input-violet"
+                                type="text"
+                                value={atendente}
+                                onChange={(e) => setAtendente(e.target.value)}
+                            />
                         </Form.Group>
 
                     </Form>

@@ -90,7 +90,7 @@ const RelatorioVendas = () => {
 
         vendasFiltradas.forEach(venda => {
             venda.itens.forEach(item => {
-                const produtoNome = item.produtoMaquina.produto.nome;
+                const produtoNome = item.produto.nome;
                 if (contagemProdutos[produtoNome]) {
                     contagemProdutos[produtoNome] += item.quantidade;
                 } else {
@@ -119,8 +119,8 @@ const RelatorioVendas = () => {
 
     const resultadoLucro = vendasFiltradas.reduce((acumulador, venda) => {
         const lucroItens = venda.itens.reduce((lucroVenda, item) => {
-            const precoVenda = item.produtoMaquina.produto.precoVenda || 0;
-            const precoCusto = item.produtoMaquina.produto.precoCusto || 0;
+            const precoVenda = item.produto.precoVenda || 0;
+            const precoCusto = item.produto.precoCusto || 0;
             return lucroVenda + (precoVenda - precoCusto);
         }, 0);
 
@@ -146,8 +146,8 @@ const RelatorioVendas = () => {
         const dia = new Date(venda.dataVenda).toLocaleDateString('pt-BR');
 
         const lucroItens = venda.itens.reduce((lucroVenda, item) => {
-            const precoVenda = item.produtoMaquina.produto.precoVenda || 0;
-            const precoCusto = item.produtoMaquina.produto.precoCusto || 0;
+            const precoVenda = item.produto.precoVenda || 0;
+            const precoCusto = item.produto.precoCusto || 0;
             return lucroVenda + (precoVenda - precoCusto);
         }, 0);
 
@@ -170,17 +170,17 @@ const RelatorioVendas = () => {
         labels: dias,
         datasets: [
             {
-                label: 'Valor de Venda por Dia',
+                label: 'Valor de Aluguéis por Dia',
                 data: valoresVendas,
-                backgroundColor: 'rgba(23, 114, 249, 1)', // azul mais suave
+                backgroundColor: 'rgba(14, 124, 31, 0.7)', // azul mais suave
                 borderRadius: 10,
             },
-            {
-                label: 'Lucro por Dia',
-                data: valoresLucro,
-                backgroundColor: 'rgba(14, 124, 31, 0.7)', // verde água
-                borderRadius: 10,
-            }
+            // {
+            //     label: 'Lucro por Dia',
+            //     data: valoresLucro,
+            //     backgroundColor: 'rgba(14, 124, 31, 0.7)', // verde água
+            //     borderRadius: 10,
+            // }
         ]
     };
 
@@ -200,7 +200,7 @@ const RelatorioVendas = () => {
             },
             title: {
                 display: true,
-                text: 'Gráfico de Vendas e Lucro por Dia',
+                text: 'Gráfico de Aluguéis por Dia',
                 font: {
                     size: 20,
                     family: 'Arial, sans-serif',
@@ -248,9 +248,22 @@ const RelatorioVendas = () => {
         }
     };
 
+    function formatarTempo(minutosTotais) {
+        const horas = Math.floor(minutosTotais / 60);
+        const minutos = minutosTotais % 60;
+
+        if (horas > 0 && minutos > 0) {
+            return `${horas} hora${horas > 1 ? 's' : ''} e ${minutos} minuto${minutos > 1 ? 's' : ''}`;
+        } else if (horas > 0) {
+            return `${horas} hora${horas > 1 ? 's' : ''}`;
+        } else {
+            return `${minutos} minuto${minutos > 1 ? 's' : ''}`;
+        }
+    }
+
     return (
         <div className="container-fluid">
-            
+
             {erro && (
                 <Alert
                     variant="danger"
@@ -298,6 +311,16 @@ const RelatorioVendas = () => {
                             </Button>
                         </Col>
 
+                        
+
+                        <Col md={2}>
+                            <Button variant="secondary" onClick={limparFiltros}>
+                                Limpar Filtros
+                            </Button>
+                        </Col>
+                    </Row>
+
+                    <Row className="justify-content-center align-items-center mt-3">
                         <Col md={3}>
                             <Form.Group className="mb-3" controlId="filtroFormaPagamento">
                                 <Form.Label>Filtrar por Forma de Pagamento</Form.Label>
@@ -313,16 +336,7 @@ const RelatorioVendas = () => {
                                 </Form.Select>
                             </Form.Group>
                         </Col>
-
-                        <Col md={2}>
-                            <Button variant="secondary" onClick={limparFiltros}>
-                                Limpar Filtros
-                            </Button>
-                        </Col>
-                    </Row>
-
-                    <Row className="justify-content-center align-items-center mt-3">
-                        {/* <Col md={3}>
+                        <Col md={3}>
                             <Form.Group className="mb-3" controlId="filtroAtendente">
                                 <Form.Label>Filtrar por Atendente</Form.Label>
                                 <Form.Control
@@ -332,11 +346,11 @@ const RelatorioVendas = () => {
                                     onChange={(e) => setFiltroAtendente(e.target.value)}
                                 />
                             </Form.Group>
-                        </Col> */}
+                        </Col>
                     </Row>
 
                     {load ? (
-                        <Load />
+                        <Load />
 
                     ) : showContent ? (
 
@@ -344,9 +358,9 @@ const RelatorioVendas = () => {
                             <Row className="mt-3">
                                 <Row className="mt-2 justify-content-center">
                                     <Col md={3}>
-                                        <Card bg='primary' text='white' className='mb-3'>
+                                        <Card bg='success' text='white' className='mb-3'>
                                             <Card.Body>
-                                                <Card.Title>Total de Vendas no Período:</Card.Title>
+                                                <Card.Title>Total de Aluguéis no Período:</Card.Title>
                                                 <Card.Text className='d-flex justify-content-end' style={{ fontSize: '2rem', fontWeight: 'bold' }}>
                                                     R$ {totalVendasPeriodo.toFixed(2)}
                                                 </Card.Text>
@@ -354,7 +368,7 @@ const RelatorioVendas = () => {
                                         </Card>
 
                                     </Col>
-                                    <Col md={3}>
+                                    {/* <Col md={3}>
                                         <Card bg='success' text='white'>
                                             <Card.Body>
                                                 <Card.Title>Total de Lucro no Período:</Card.Title>
@@ -363,7 +377,7 @@ const RelatorioVendas = () => {
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>
-                                    </Col>
+                                    </Col> */}
                                     {/* <Col md={3}>
                                 <div className="card p-3">
                                     <p className="day-text">Total de Desconto no Período:</p>
@@ -386,15 +400,15 @@ const RelatorioVendas = () => {
                             {/* Tabela de vendas */}
                             <Accordion defaultActiveKey="0" className='m-5'>
                                 <Accordion.Item eventKey="0">
-                                    <Accordion.Header>Vendas no Período</Accordion.Header>
+                                    <Accordion.Header>Aluguéis no Período</Accordion.Header>
                                     <Accordion.Body>
                                         <Table responsive striped bordered hover>
                                             <thead>
                                                 <tr>
                                                     <th>Data</th>
-                                                    {/* <th>Atendente</th> */}
+                                                    <th>Atendente</th>
                                                     <th>Subtotal</th>
-                                                    <th>Desconto</th>
+                                                    {/* <th>Desconto</th> */}
                                                     <th>Total</th>
                                                     <th>Forma Pagamento</th>
                                                     <th>Detalhes</th>
@@ -404,20 +418,20 @@ const RelatorioVendas = () => {
                                                 {vendasFiltradas.map((venda) => (
                                                     <tr key={venda.id}>
                                                         <td>{`${new Date(venda.dataVenda).toLocaleDateString('pt-BR')} ${new Date(venda.dataVenda).toLocaleTimeString('pt-BR')}`}</td>
-                                                        {/*<td>{venda.atendente}</td>*/}
+                                                        <td>{venda.atendente}</td>
                                                         <td>R$ {venda.subTotal?.toFixed(2)}</td>
-                                                        <td>R$ {venda.desconto?.toFixed(2)}</td>
+                                                        {/* <td>R$ {venda.desconto?.toFixed(2)}</td> */}
                                                         <td>R$ {venda.valorTotal?.toFixed(2)}</td>
                                                         <td>{venda.formaPagamento}</td>
                                                         <td>
-                                                            <OverlayTrigger
+                                                            {/* <OverlayTrigger
                                                                 placement="top"
                                                                 overlay={
                                                                     <BootstrapTooltip id={`tooltip-${venda.id}`}>
                                                                         {venda.desconto > 0 ? "Venda com Desconto" : "Venda sem Desconto"}
                                                                     </BootstrapTooltip>
                                                                 }
-                                                            >
+                                                            > */}
                                                                 <Button
                                                                     size="sm"
                                                                     variant={venda.desconto > 0 ? "warning" : "info"}
@@ -425,7 +439,7 @@ const RelatorioVendas = () => {
                                                                 >
                                                                     Ver detalhes
                                                                 </Button>
-                                                            </OverlayTrigger>
+                                                            {/* </OverlayTrigger> */}
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -438,24 +452,24 @@ const RelatorioVendas = () => {
                             {/* Tabela de produtos mais vendidos */}
                             <Accordion defaultActiveKey="1" className='m-5'>
                                 <Accordion.Item eventKey="1">
-                                    <Accordion.Header>Produtos Mais Vendidos</Accordion.Header>
+                                    <Accordion.Header>Brinquedos Mais Alugados</Accordion.Header>
                                     <Accordion.Body>
                                         <Table striped bordered hover>
                                             <thead>
                                                 <tr>
-                                                    <th>Produto</th>
-                                                    <th>Quantidade Vendida</th>
+                                                    <th>Brinquedo</th>
+                                                    <th>Tempo Total no Período</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {produtosMaisVendidos.length > 0 ? produtosMaisVendidos.map((produto) => (
                                                     <tr key={produto.nome}>
                                                         <td>{produto.nome}</td>
-                                                        <td>{produto.quantidade}</td>
+                                                        <td>{formatarTempo(produto.quantidade)}</td>
                                                     </tr>
                                                 )) : (
                                                     <tr>
-                                                        <td colSpan="2" className="text-center">Nenhum produto vendido no período.</td>
+                                                        <td colSpan="2" className="text-center">Nenhum Brinquedo alugado no período.</td>
                                                     </tr>
                                                 )}
                                             </tbody>
@@ -470,7 +484,7 @@ const RelatorioVendas = () => {
             {/* Modal de detalhes */}
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Detalhes da Venda</Modal.Title>
+                    <Modal.Title>Detalhes do Aluguel</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {vendaSelecionada && (
@@ -483,47 +497,47 @@ const RelatorioVendas = () => {
                                     <p><strong>Forma de Pagamento:</strong> {vendaSelecionada.formaPagamento}</p>
                                 </Col>
                                 <Col md={6}>
-                                    <p><strong>Subtotal:</strong> R$ {vendaSelecionada.subTotal?.toFixed(2)}</p>
-                                    <p><strong>Desconto:</strong> R$ {vendaSelecionada.desconto?.toFixed(2)}</p>
+                                    {/* <p><strong>Subtotal:</strong> R$ {vendaSelecionada.subTotal?.toFixed(2)}</p>
+                                    <p><strong>Desconto:</strong> R$ {vendaSelecionada.desconto?.toFixed(2)}</p> */}
                                     <p><strong>Total:</strong> <strong>R$ {vendaSelecionada.valorTotal?.toFixed(2)}</strong></p>
                                 </Col>
                             </Row>
 
                             {/* Itens da venda */}
-                            <h5>Itens</h5>
+                            <h5>Brinquedo</h5>
                             <Table size="sm" bordered hover>
                                 <thead>
                                     <tr>
-                                        <th>Produto</th>
-                                        <th>Quantidade</th>
-                                        <th>Preço Unitário</th>
+                                        <th>Brinquedo</th>
+                                        <th>Tempo Escolhido</th>
+                                        <th>Valor do Minuto</th>
                                         <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {vendaSelecionada.itens.map((item, idx) => (
                                         <tr key={idx}>
-                                            <td>{item.produtoMaquina.produto.nome}</td>
+                                            <td>{item.produto.nome}</td>
                                             <td>{item.quantidade}</td>
-                                            <td>R$ {item.produtoMaquina.produto.precoVenda?.toFixed(2)}</td>
-                                            <td>R$ {(item.produtoMaquina.produto.precoVenda * item.quantidade)?.toFixed(2)}</td>
+                                            <td>R$ {item.produto.precoVenda?.toFixed(2)}</td>
+                                            <td>R$ {(item.produto.precoVenda * item.quantidade)?.toFixed(2)}</td>
                                         </tr>
                                     ))}
                                     {/* Linha de subtotal dos itens */}
-                                    <tr>
+                                    {/* <tr>
                                         <td colSpan="3" className="text-end"><strong>Subtotal dos Itens:</strong></td>
                                         <td><strong>R$ {vendaSelecionada.subTotal?.toFixed(2)}</strong></td>
-                                    </tr>
+                                    </tr> */}
                                     {/* Linha de desconto */}
-                                    <tr>
+                                    {/* <tr>
                                         <td colSpan="3" className="text-end"><strong>Desconto:</strong></td>
                                         <td><strong>- R$ {vendaSelecionada.desconto?.toFixed(2)}</strong></td>
-                                    </tr>
+                                    </tr> */}
                                     {/* Linha de total final */}
-                                    <tr>
+                                    {/* <tr>
                                         <td colSpan="3" className="text-end"><strong>Total Final:</strong></td>
                                         <td><strong>R$ {vendaSelecionada.valorTotal?.toFixed(2)}</strong></td>
-                                    </tr>
+                                    </tr> */}
                                 </tbody>
                             </Table>
                         </>
