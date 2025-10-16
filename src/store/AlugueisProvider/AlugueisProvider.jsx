@@ -13,7 +13,7 @@ export const AlugueisProvider = ({ children }) => {
 
     useEffect(() => {
             console.log("Iniciando conexão com o servidor...");
-            const eventSource = new EventSource("http://localhost/api/aluguel/stream");
+            const eventSource = new EventSource("http://192.168.0.7/api/aluguel/stream");
 
             eventSource.onmessage = (e) => {
                 const data = JSON.parse(e.data);

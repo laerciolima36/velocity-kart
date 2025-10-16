@@ -276,7 +276,7 @@ const RelatorioVendas = () => {
             )}
 
             <Card className='m-4'>
-                <Card.Header><FaChartLine style={{ marginRight: "8px" }} />Relatório de Vendas</Card.Header>
+                <Card.Header><FaChartLine style={{ marginRight: "8px" }} />Relatório de Aluguéis</Card.Header>
                 <Card.Body>
                     {/* <Card.Title>Special title treatment</Card.Title> */}
                     <Card.Text>

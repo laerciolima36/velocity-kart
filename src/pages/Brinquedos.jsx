@@ -3,7 +3,7 @@ import Menu from '../components/Menu/Menu';
 
 const Brinquedos = () => {
     return (
-        <div style={{backgroundColor: "white"}}>
+        <div>
             <Menu />
             <CadastroProduto />
         </div>
