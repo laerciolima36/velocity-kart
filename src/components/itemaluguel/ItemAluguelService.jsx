@@ -25,4 +25,25 @@ export const retomarById = async (id) => {
   }
 };
 
-export default { pausarById, retomarById };
+//atualiza a flag view do aluguel finalizado para ser mostrado ou nao na page aluguel
+export const setFlagFalse = async (id) => {
+  try {
+    const response = await api.put(`/api/aluguel/finalizado/${id}`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+//lista todos os alugueis caso a flag view seja true
+export const listarAlugueisFinalizados = async () => {
+  try {
+    const response = await api.get("/api/aluguel/finalizados");
+    console.log("Response data:", response.data);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export default { pausarById, retomarById, listarAlugueisFinalizados, setFlagFalse };

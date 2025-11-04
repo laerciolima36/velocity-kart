@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { BASE_URL } from "../../config/axiosInstance";
 
 const AlugueisContext = createContext({
   alugueis: [],
@@ -13,7 +14,7 @@ export const AlugueisProvider = ({ children }) => {
 
     useEffect(() => {
             console.log("Iniciando conexão com o servidor...");
-            const eventSource = new EventSource("http://192.168.0.7/api/aluguel/stream");
+            const eventSource = new EventSource(BASE_URL + "/api/aluguel/stream");
 
             eventSource.onmessage = (e) => {
                 const data = JSON.parse(e.data);

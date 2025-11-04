@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Se você estiver usando React Router
+import { useNavigate, useLocation } from 'react-router-dom'; // Se você estiver usando React Router
 import api from "../../config/axiosInstance";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logoautomationcode from '../../assets/logoautomationcode.png'; // Certifique-se de que o caminho está correto
+import logovelo from '../../assets/logovelo.png'
 import Load from '../Load/Load'; // Componente de loading, se necessário
 
 const LoginPage = () => {
@@ -10,6 +11,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate(); // Hook para navegação
+  const location = useLocation();
   const [loading, setLoading] = useState(false); // Estado para controle de loading
 
   const handleUsernameChange = (event) => {
@@ -36,8 +38,9 @@ const LoginPage = () => {
       // Armazena o token (exemplo usando localStorage)
       localStorage.setItem('jwtToken', token);
 
-      // Redireciona o usuário para a página principal (substitua '/dashboard' pela sua rota desejada)
-      navigate('/');
+      // Redireciona para a rota anterior (ou "/" se não houver)
+      const from = location.state?.from?.pathname || "/";
+      navigate(from, { replace: true });
     } catch (error) {
       setLoading(false); // Finaliza o loading
       console.error('Erro ao fazer login:', error);
@@ -51,11 +54,11 @@ const LoginPage = () => {
 
   return (
     <div>
-      {loading && <Load/>}
+      {loading && <Load />}
       <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
         <div className="card shadow p-4 m-4" style={{ width: '100%', maxWidth: '400px' }}>
-          <img src={logoautomationcode} alt="automatioincode" />
-          <h5 className="text-center mb-4">Sistema De Venda Automática</h5>
+          <img src={logovelo} alt="automatioincode" />
+          <h5 className="text-center mb-4">Login</h5>
           {error && <div className="alert alert-danger">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">

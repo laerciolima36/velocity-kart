@@ -132,7 +132,7 @@ export default function CadastroProduto() {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container">
 
       {loading && <Load />}
 
@@ -149,22 +149,25 @@ export default function CadastroProduto() {
       )}
 
       <Card className='m-4'>
-        <Card.Header><FaDatabase style={{ marginRight: "8px" }}/>Cadastro de Brinquedos</Card.Header>
+        <Card.Header><FaDatabase style={{ marginRight: "8px" }} />Cadastro de Brinquedos</Card.Header>
         <Card.Body>
-          <Row className="justify-content-between mt-5 mb-3">
+          <Row>
+            <Col className="text-end">
+              <Button type="button" variant="primary" onClick={() => { setShowModal(true); setEditando(false); setProdutoAtual({ nome: "" }); setEditandoFoto(false) }}>Adicionar Novo Brinquedo</Button>
+            </Col>
+          </Row>
+          <Row className="justify-content-between mt-2">
             <Col md={4}>
               <Form.Control
                 type="text"
                 placeholder="Buscar por nome ou código..."
                 value={filtro}
                 onChange={(e) => setFiltro(e.target.value)}
-                className="mb-3"
+                className="mt-3"
               />
             </Col>
-            <Col md={4} className="text-end">
-              <Button type="button" variant="primary" onClick={() => { setShowModal(true); setEditando(false); setProdutoAtual({ nome: "" }); setEditandoFoto(false) }}>Adicionar Novo Brinquedo</Button>
-            </Col>
           </Row>
+
 
           <Table responsive striped bordered hover className="mt-3">
             <thead>
@@ -176,11 +179,11 @@ export default function CadastroProduto() {
                 {/* <th>Cor</th> */}
                 {/* <th>Tamanho</th> */}
                 {/* <th>Categoria</th> */}
-                <th>Descrição</th>
+                {/* <th>Descrição</th> */}
                 {/* <th>Quantidade</th> */}
                 {/* <th>Foto</th> */}
                 <th>Opções</th>
-                
+
               </tr>
             </thead>
             <tbody>
@@ -209,7 +212,7 @@ export default function CadastroProduto() {
                   {/* <td>{produto.categoria}</td> */}
                   {/* <td>R$ {produto.precoCusto.toFixed(2)}</td> */}
                   <td>R$ {produto.precoVenda.toFixed(2)}</td>
-                  <td>{produto.descricao}</td>
+                  {/* <td>{produto.descricao}</td> */}
                   {/* <td>{produto.quantidadeEstoque}</td> */}
                   <td>
                     <Button size="sm" variant="warning" onClick={() => handleEditar(produto)}>Editar</Button>{" "}
@@ -357,7 +360,7 @@ export default function CadastroProduto() {
               </Col>
 
               <Col md={3} className="mt-3">
-
+                <Form.Label>Selecione a Foto:</Form.Label>
                 <div style={{ position: "relative", width: 250, height: 250 }}>
                   <input
                     type="file"
@@ -410,7 +413,7 @@ export default function CadastroProduto() {
             </Row>
 
 
-            <Form.Group className="mb-3">
+            {/* <Form.Group className="mb-3">
               <Form.Label>Descrição</Form.Label>
               <Form.Control
                 as="textarea"
@@ -418,7 +421,7 @@ export default function CadastroProduto() {
                 value={produtoAtual.descricao || ""}
                 onChange={(e) => setProdutoAtual({ ...produtoAtual, descricao: e.target.value })}
               />
-            </Form.Group>
+            </Form.Group> */}
 
           </Form>
 

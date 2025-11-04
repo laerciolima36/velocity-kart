@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+export const BASE_URL = "http://192.168.0.7";
+
 const api = axios.create({
-  baseURL: "http://192.168.0.7",
+  baseURL: BASE_URL,
   // baseURL: "",
   headers: {
     "Content-Type": "application/json",
@@ -43,7 +45,7 @@ api.interceptors.response.use(
 export const logout = () => {
   localStorage.removeItem("token");
   sessionStorage.removeItem("token");
-  window.location.href = "/login"; // ou use navigate do React Router
+  window.location.href = "/"; // ou use navigate do React Router
 };
 
 export default api;

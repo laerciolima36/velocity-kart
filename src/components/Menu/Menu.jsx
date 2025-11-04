@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/logovelo.png';
 import { logout } from '../../config/axiosInstance';
 
-function Menu({titulo}) {
+function Menu({ titulo }) {
   const handleLogout = () => {
     logout();
   };
@@ -15,21 +15,23 @@ function Menu({titulo}) {
       <Navbar bg="dark" data-bs-theme="dark" collapseOnSelect expand="lg" className="bg-body-tertiary">
         <Container>
           <Navbar.Brand href="#home">
-            <img
-              src={logo}
-              alt="Logo"
-              style={{ width: '4rem', objectFit: 'contain' }}
-            />
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <img
+                src={logo}
+                alt="Logo"
+                style={{ width: '4rem', objectFit: 'contain' }}
+              />
+            </Link>
           </Navbar.Brand>
           <Navbar.Brand>
-            {titulo ? titulo : 'Velocity Kart'}
+            {titulo ? titulo : 'Velocity Cart'}
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mx-auto" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
               <Nav.Link as="span">
                 <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                  Dashboard
+                  Aluguéis
                 </Link>
               </Nav.Link>
               <Nav.Link as="span">

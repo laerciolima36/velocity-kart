@@ -13,7 +13,7 @@ const Fila = () => {
     const [error, setError] = useState(null);
     const [fila, setFila] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [informacoes, setInformacoes] = useState(null);
+    const [informacoes, setInformacoes] = useState([]);
     const [erro, setErro] = useState(null);
 
     const carregarInfo = async () => {
@@ -40,6 +40,7 @@ const Fila = () => {
 
             <Container className='text-white mt-4'>
                 <Row className='mt-4'>
+                    <span className='mb-2'>A Fila será mostrada abaixo:</span>
                     {informacoes && informacoes.map((info) => (
                         info.fila.length > 0 && (
                         <Col key={info.produtoId} xs={12} sm={4} md={4} lg={12} className="mb-4">

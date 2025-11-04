@@ -1,12 +1,14 @@
 // ItemAluguel.jsx
 import React, { useState } from 'react';
-import { pausarById, retomarById } from './ItemAluguelService';
+import { pausarById, retomarById, setFlagFalse } from './ItemAluguelService';
 import './css/style.css';
 import CountdownCircle from '../itemaluguel/CountdownCircle';
 import { FaPlay, FaPause } from "react-icons/fa";
 import { BsPauseCircle, BsPlayCircle } from "react-icons/bs";
+import { IoIosCloseCircle } from "react-icons/io";
 
-const ItemAluguel = ({ aluguel }) => {
+
+const ItemAluguel = ({ aluguel, carregarAlugueisFinalizados }) => {
 
     const handleTogglePausa = () => {
 
@@ -21,6 +23,11 @@ const ItemAluguel = ({ aluguel }) => {
         }
 
         console.log(aluguel.pausado ? 'Retomar' : 'Pausar');
+    };
+
+    const handleSetFlagView = async () => {
+        await setFlagFalse(aluguel.id);
+        carregarAlugueisFinalizados();
     };
 
     // Função para formatar data/hora no formato dd/mm hh:mm
@@ -41,7 +48,20 @@ const ItemAluguel = ({ aluguel }) => {
             </div>
             <div className='text-white justify-content-between align-items-center d-flex'>
                 👫 {aluguel.nomeResponsavel}
-                {aluguel.pausado ?
+                {aluguel.flagView ? (
+                    <IoIosCloseCircle
+                        size={24}
+                        color="#ff0000ff"
+                        style={{ transition: "transform 0.1s" }}
+                        onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+                        onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                        onTouchStart={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+                        onTouchEnd={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                        title="Aluguel finalizado"
+                        onClick={handleSetFlagView}
+                    />
+                ) : 
+                    aluguel.pausado ?
                         <BsPlayCircle size={24}
                             color="#f6ff00ff"
                             style={{ transition: "transform 0.1s" }}
@@ -60,18 +80,19 @@ const ItemAluguel = ({ aluguel }) => {
                             onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
                             onTouchStart={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
                             onTouchEnd={(e) => (e.currentTarget.style.transform = "scale(1)")}
-                            onClick={handleTogglePausa} />}
+                            onClick={handleTogglePausa} />
+                }
             </div>
             <div className='text-white'>
                 👶 {aluguel.nomeCrianca}
             </div>
             <div className='mt-4 text-center justify-content-center align-items-center d-flex flex-column'>
-                <CountdownCircle remainingSeconds={aluguel.tempoRestante} totalSeconds={aluguel.tempoEscolhido * 60} pausado={aluguel.pausado} />
+                <CountdownCircle remainingSeconds={aluguel.tempoRestante} totalSeconds={aluguel.tempoEscolhido * 60} pausado={aluguel.pausado} flagView={aluguel.flagView}/>
             </div>
             <div className='text-end justify-content-end align-items-end d-flex flex-column mb-4'>
-                    
-                </div>
-                <div className='text-secondary text-center justify-content-center align-items-center d-flex flex-column mb-2' style={{ fontSize: '12px' }}>
+
+            </div>
+            <div className='text-secondary text-center justify-content-center align-items-center d-flex flex-column mb-2' style={{ fontSize: '12px' }}>
                 🕑 {formatDateTime(aluguel.inicio)} - {aluguel.tempoEscolhido} min
             </div>
             <div className='text-secondary text-center justify-content-center align-items-center d-flex flex-column' style={{ fontSize: '12px' }}>

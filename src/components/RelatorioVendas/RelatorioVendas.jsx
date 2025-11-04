@@ -275,14 +275,14 @@ const RelatorioVendas = () => {
                 </Alert>
             )}
 
-            <Card className='m-4'>
+            <Card className='mt-4'>
                 <Card.Header><FaChartLine style={{ marginRight: "8px" }} />Relatório de Aluguéis</Card.Header>
                 <Card.Body>
                     {/* <Card.Title>Special title treatment</Card.Title> */}
                     <Card.Text>
                         Escolha o Período:                    </Card.Text>
 
-                    <Row className='justify-content-center align-items-center mt-5'>
+                    <Row className='justify-content-center align-items-center mt-4'>
                         <Col md={2}>
                             <Form.Group className="mb-3" controlId="dataInicio">
                                 <Form.Label>Data Início</Form.Label>
@@ -311,7 +311,7 @@ const RelatorioVendas = () => {
                             </Button>
                         </Col>
 
-                        
+
 
                         <Col md={2}>
                             <Button variant="secondary" onClick={limparFiltros}>
@@ -432,13 +432,13 @@ const RelatorioVendas = () => {
                                                                     </BootstrapTooltip>
                                                                 }
                                                             > */}
-                                                                <Button
-                                                                    size="sm"
-                                                                    variant={venda.desconto > 0 ? "warning" : "info"}
-                                                                    onClick={() => handleOpenModal(venda)}
-                                                                >
-                                                                    Ver detalhes
-                                                                </Button>
+                                                            <Button
+                                                                size="sm"
+                                                                variant={venda.desconto > 0 ? "warning" : "info"}
+                                                                onClick={() => handleOpenModal(venda)}
+                                                            >
+                                                                Ver detalhes
+                                                            </Button>
                                                             {/* </OverlayTrigger> */}
                                                         </td>
                                                     </tr>
