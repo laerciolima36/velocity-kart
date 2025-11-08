@@ -10,6 +10,7 @@ import {
     Accordion, Col, Row
 } from "react-bootstrap"; import Card from 'react-bootstrap/Card';
 import { listarProdutos } from '../CadastroProduto/ProdutoService';
+import SignaturePad from '../SignaturePad/SignaturePad';
 
 
 const FormContrato = () => {
@@ -21,6 +22,12 @@ const FormContrato = () => {
     const [selecionados, setSelecionados] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [carregando, setCarregando] = useState(false);
+
+    const [assinatura, setAssinatura] = useState(null);
+
+    const handleAssinatura = (imgBase64) => {
+        setAssinatura(imgBase64);
+    };
 
     const formatarParaBRL = (valor) => {
         return valor.toLocaleString("pt-BR", {
@@ -77,6 +84,7 @@ const FormContrato = () => {
 
     const enviar = async () => {
         console.log("Produtos selecionados:", selecionados);
+        console.log("Assinatura base64:", assinatura);
         // Exemplo:
         // await axios.post("http://localhost:8080/api/uso", selecionados);
     };
@@ -254,6 +262,25 @@ const FormContrato = () => {
                                         Total Geral:{" "}
                                         <span className="text-success">{formatarParaBRL(calcularTotalGeral())}</span>
                                     </h5>
+                                </div>
+                            )}
+
+                            <div className='mt-4 pt-4'>
+                                <h4>Assinatura do Cliente</h4>
+                                <div className='pe-4 ps-4'>
+                                    <SignaturePad onSave={handleAssinatura} />
+                                </div>
+                            </div>
+
+                            {assinatura && (
+                                <div className="mt-3">
+                                    <h6>Pré-visualização da Assinatura:</h6>
+                                    <img
+                                        src={assinatura}
+                                        alt="Assinatura do cliente"
+                                        className="border rounded"
+                                        width="300"
+                                    />
                                 </div>
                             )}
 

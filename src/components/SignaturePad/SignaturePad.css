@@ -1,0 +1,8 @@
+.signature-canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 1; /* mantém proporção 2:1, pode ajustar */
+  min-height: 250px;
+  max-height: 500px;
+  background-color: white;
+}
