@@ -1,14 +1,28 @@
 // ItemAluguel.jsx
 import React, { useState } from 'react';
-import { pausarById, retomarById, setFlagFalse } from './ItemAluguelService';
+import { pausarById, retomarById, setFlagFalse, cancelarAluguel } from './ItemAluguelService';
 import './css/style.css';
 import CountdownCircle from '../itemaluguel/CountdownCircle';
 import { FaPlay, FaPause } from "react-icons/fa";
 import { BsPauseCircle, BsPlayCircle } from "react-icons/bs";
 import { IoIosCloseCircle } from "react-icons/io";
+import { Button, Modal } from 'react-bootstrap';
 
 
 const ItemAluguel = ({ aluguel, carregarAlugueisFinalizados }) => {
+
+    const isLoggedIn = !!localStorage.getItem("jwtToken");
+
+    const [showConfirm, setShowConfirm] = useState(false);
+
+    const handleCancelar = () => {
+        setShowConfirm(true);
+    };
+
+    const confirmarCancelamento = () => {
+        cancelarAluguel(aluguel.id);
+        setShowConfirm(false);
+    };
 
     const handleTogglePausa = () => {
 
@@ -60,7 +74,7 @@ const ItemAluguel = ({ aluguel, carregarAlugueisFinalizados }) => {
                         title="Aluguel finalizado"
                         onClick={handleSetFlagView}
                     />
-                ) : 
+                ) :
                     aluguel.pausado ?
                         <BsPlayCircle size={24}
                             color="#f6ff00ff"
@@ -87,7 +101,7 @@ const ItemAluguel = ({ aluguel, carregarAlugueisFinalizados }) => {
                 👶 {aluguel.nomeCrianca}
             </div>
             <div className='mt-4 text-center justify-content-center align-items-center d-flex flex-column'>
-                <CountdownCircle remainingSeconds={aluguel.tempoRestante} totalSeconds={aluguel.tempoEscolhido * 60} pausado={aluguel.pausado} flagView={aluguel.flagView}/>
+                <CountdownCircle remainingSeconds={aluguel.tempoRestante} totalSeconds={aluguel.tempoEscolhido * 60} pausado={aluguel.pausado} flagView={aluguel.flagView} />
             </div>
             <div className='text-end justify-content-end align-items-end d-flex flex-column mb-4'>
 
@@ -98,6 +112,27 @@ const ItemAluguel = ({ aluguel, carregarAlugueisFinalizados }) => {
             <div className='text-secondary text-center justify-content-center align-items-center d-flex flex-column' style={{ fontSize: '12px' }}>
                 🚗 {aluguel.produto.nome} 💰 {aluguel.pago ? "Pago" : "Falta Pagar"}
             </div>
+            {isLoggedIn &&
+                <div className='mt-4 text-secondary text-center justify-content-center align-items-center d-flex flex-column' style={{ fontSize: '12px' }}>
+                    <Button id={aluguel.id} variant='danger' onClick={handleCancelar}>Cancelar</Button>
+                </div>
+            }
+
+
+            <Modal show={showConfirm} onHide={() => setShowConfirm(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmar cancelamento de {aluguel.nomeResponsavel}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Tem certeza que deseja cancelar este aluguel?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowConfirm(false)}>
+                        Não
+                    </Button>
+                    <Button variant="danger" onClick={confirmarCancelamento}>
+                        Sim, cancelar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

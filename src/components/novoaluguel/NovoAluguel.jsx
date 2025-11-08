@@ -37,8 +37,8 @@ const NovoAluguel = () => {
 function FloatingAddButton({ onClick }) {
     const fabStyle = {
         position: 'fixed',
-        right: 24,
-        bottom: 24,
+        right: 20,
+        bottom: 75,
         width: 56,
         height: 56,
         borderRadius: '50%',

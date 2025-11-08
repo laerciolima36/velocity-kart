@@ -9,6 +9,9 @@ import './css/style.css';
 import InfoAluguel from '../components/InfoAluguel/InfoAluguel';
 import { FaInfoCircle } from "react-icons/fa";
 import { listarAlugueisFinalizados, setFlagFalse } from '../components/itemaluguel/ItemAluguelService';
+import BottomMenu from '../components/BottomMenu/BottomMenu';
+import { IoIosAddCircle } from "react-icons/io";
+
 
 const Aluguel = ({ tamanhox }) => {
 
@@ -39,7 +42,7 @@ const Aluguel = ({ tamanhox }) => {
             <Menu />
             <div className='container d-flex justify-content-end align-items-center mt-4'>
                 <div>
-                    <div className='border border-1 p-2 rounded text-white d-flex text-center justify-content-center align-items-center' style={{ fontSize: "12px" }}>
+                    <div className='text-white d-flex text-center justify-content-center align-items-center' style={{ fontSize: "12px" }}>
                         <div className='me-2' style={{ fontSize: '12px' }}>
                             <span>Legenda:</span>
                         </div>
@@ -57,11 +60,11 @@ const Aluguel = ({ tamanhox }) => {
                                 <FaInfoCircle className='text-white' onClick={() => setShowInfo(true)} style={{ cursor: 'pointer' }} />
                             </Button>
                         </div>
-                        <div className='ms-2'>
+                        {/* <div className='ms-2'>
                             <Link to="/fila" style={{ textDecoration: 'none', color: 'white', fontSize: '12px' }}>
                                 <Button variant='info' size='sm'>Ver Fila</Button>
                             </Link>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
@@ -80,8 +83,8 @@ const Aluguel = ({ tamanhox }) => {
                 }
                 </Row>
                 {!error && alugueis.length === 0 ? (
-                    <div style={{ margin: '20px 0', textAlign: 'center', color: 'white' }}>
-                        Toque no + para registrar um novo aluguel
+                    <div style={{ margin: '20px 0', textAlign: 'center', color: 'white', marginTop: '150px' }}>
+                        Toque no <IoIosAddCircle style={{fontSize: "24px"}}/> para registrar um novo aluguel
                     </div>
                 ) : (
                     <Row className='mt-4'>{
@@ -104,13 +107,15 @@ const Aluguel = ({ tamanhox }) => {
                     <Alert
                         variant="danger"
                         //onClose={() => setErro(null)}
-                        dismissible
+                        // dismissible
                         className="custom-alert"
                     >
                         Erro: {error}
                     </Alert>
                 )
             }
+
+            <BottomMenu />
         </div >
     );
 };

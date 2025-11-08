@@ -14,7 +14,7 @@ function Menu({ titulo }) {
     <>
       <Navbar bg="dark" data-bs-theme="dark" collapseOnSelect expand="lg" className="bg-body-tertiary">
         <Container>
-          <Navbar.Brand href="#home">
+          <div>
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
               <img
                 src={logo}
@@ -22,7 +22,7 @@ function Menu({ titulo }) {
                 style={{ width: '4rem', objectFit: 'contain' }}
               />
             </Link>
-          </Navbar.Brand>
+          </div>
           <Navbar.Brand>
             {titulo ? titulo : 'Velocity Cart'}
           </Navbar.Brand>

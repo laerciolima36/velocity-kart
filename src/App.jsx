@@ -1,14 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
-import LoginPage from './components/LoginPage/LoginPage';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import CadastroProduto from './components/CadastroProduto/CadastroProduto';
-import NotFound from './components/NotFound/NotFound';
-import Aluguel from './pages/Aluguel';
-import Contratos from './pages/Contratos';
-import Relatorio from './pages/Relatorio';
-import Fila from './pages/Fila';
 import './App.css';
+import LoginPage from './components/LoginPage/LoginPage';
+import NotFound from './components/NotFound/NotFound';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import Aluguel from './pages/Aluguel';
 import Brinquedos from './pages/Brinquedos';
+import Contratos from './pages/Contratos';
+import Fila from './pages/Fila';
+import Relatorio from './pages/Relatorio';
 
 function App() {
   return (

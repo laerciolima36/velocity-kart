@@ -5,7 +5,7 @@ import FormContrato from '../components/FormContrato/FormContrato';
 const Contratos = () => {
     return (
         <div>
-            <Menu />
+            <Menu titulo={"Contratos"}/>
             <FormContrato />
         </div>
     );

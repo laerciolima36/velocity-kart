@@ -10,8 +10,16 @@ const api = axios.create({
   },
 });
 
+export const authApi = axios.create({
+  baseURL: BASE_URL,
+  // baseURL: "",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 // Interceptor para adicionar o token JWT em cada request
-api.interceptors.request.use(
+authApi.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('jwtToken');
     if (token) {
@@ -26,7 +34,7 @@ api.interceptors.request.use(
 );
 
 // Interceptor para tratar respostas com erro de autenticação
-api.interceptors.response.use(
+authApi.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response &&
@@ -43,8 +51,8 @@ api.interceptors.response.use(
 );
 
 export const logout = () => {
-  localStorage.removeItem("token");
-  sessionStorage.removeItem("token");
+  localStorage.removeItem("jwtToken");
+  sessionStorage.removeItem("jwtToken");
   window.location.href = "/"; // ou use navigate do React Router
 };
 

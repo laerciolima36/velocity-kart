@@ -35,6 +35,15 @@ export const setFlagFalse = async (id) => {
   }
 };
 
+export const cancelarAluguel = async (id) => {
+  try {
+    const response = await api.post(`/api/aluguel/${id}/finalizar`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 //lista todos os alugueis caso a flag view seja true
 export const listarAlugueisFinalizados = async () => {
   try {

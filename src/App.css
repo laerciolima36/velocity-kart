@@ -1,15 +1,22 @@
 .custom-alert {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2051; /* Garantir que fique sobre outros elementos */
-    width: auto;  /* Ou você pode definir um tamanho fixo, se preferir */
-  }
+  position: fixed;
+  top: 150px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2051;
+  /* fica acima dos modais e overlays */
+  width: auto;
+  max-width: 90%;
+  /* garante boa aparência em telas pequenas */
+  margin: 0;
+  /* remove margens que quebram o alinhamento */
+  text-align: center;
+  /* centraliza o conteúdo interno */
+}
 
-  .App{
-    background: linear-gradient(135deg, #101011 0%, #121213 100%);
-    height: 100%;
-    width: 100vw;
-    min-height: 100vh;
-  }
+.App {
+  background: linear-gradient(135deg, #101011 0%, #121213 100%);
+  height: 100%;
+  width: 100vw;
+  min-height: 100vh;
+}

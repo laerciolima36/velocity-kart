@@ -7,7 +7,7 @@ import {
     InputGroup,
     Modal,
     Spinner,
-    Accordion
+    Accordion, Col, Row
 } from "react-bootstrap"; import Card from 'react-bootstrap/Card';
 import { listarProdutos } from '../CadastroProduto/ProdutoService';
 
@@ -22,11 +22,21 @@ const FormContrato = () => {
     const [showModal, setShowModal] = useState(false);
     const [carregando, setCarregando] = useState(false);
 
+    const formatarParaBRL = (valor) => {
+        return valor.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+        });
+    };
+
     const carregarProdutos = async () => {
         try {
+            setCarregando(true);
             const lista = await listarProdutos();
             setProdutos(lista);
+            setCarregando(false);
         } catch (error) {
+            setCarregando(false);
             console.error("Erro ao carregar produtos:", error);
         }
     };
@@ -36,28 +46,38 @@ const FormContrato = () => {
         carregarProdutos();
     }, []);
 
-    // Adicionar produto selecionado
     const adicionarProduto = (produto) => {
-        // Evitar duplicados
         if (selecionados.find((p) => p.id === produto.id)) return;
-        setSelecionados([...selecionados, { ...produto, tempoUso: "" }]);
+        setSelecionados([...selecionados, { ...produto, tempoUso: "", valorTotal: 0 }]);
     };
 
-    // Atualizar tempo de uso
     const atualizarTempo = (id, tempo) => {
         setSelecionados((prev) =>
-            prev.map((p) => (p.id === id ? { ...p, tempoUso: tempo } : p))
+            prev.map((p) => {
+                return p.id === id ? { ...p, tempoUso: tempo } : p;
+            })
         );
     };
 
-    // Remover produto da seleção
+    const atualizarValor = (id, novoValor) => {
+        setSelecionados((prev) =>
+            prev.map((p) =>
+                p.id === id ? { ...p, valorTotal: novoValor } : p
+            )
+        );
+    };
+
     const removerProduto = (id) => {
         setSelecionados(selecionados.filter((p) => p.id !== id));
     };
 
+    const calcularTotalGeral = () => {
+        return selecionados.reduce((total, p) => total + (p.valorTotal || 0), 0);
+    };
+
     const enviar = async () => {
         console.log("Produtos selecionados:", selecionados);
-        // Exemplo de envio:
+        // Exemplo:
         // await axios.post("http://localhost:8080/api/uso", selecionados);
     };
 
@@ -96,171 +116,216 @@ const FormContrato = () => {
 
             <Card>
                 <Card.Header>Contrato: </Card.Header>
-                <Card.Body>
+                <Card.Body className='p-4'>
                     <Form>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group className="mb-3">
+                            <Form.Label>Número do Contrato:</Form.Label>
+                            <Col xs={8} md={6} lg={3}>
+                                <Form.Control type="number" />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
                             <Form.Label>Nome do Contratante:</Form.Label>
-                            <Form.Control type="text" />
+                            <Col xs={9} md={5} lg={7}>
+                                <Form.Control type="text" />
+                            </Col>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group className="mb-3" >
                             <Form.Label>Endereço:</Form.Label>
-                            <Form.Control type="text" lg={3} />
+                            <Col xs={9} md={5} lg={7}>
+                                <Form.Control type="text" lg={3} />
+                            </Col>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group className="mb-3" >
                             <Form.Label>Número:</Form.Label>
-                            <Form.Control type="text" />
-
+                            <Col xs={8} md={6} lg={3}>
+                                <Form.Control type="number" />
+                            </Col>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Group className="mb-3" >
                             <Form.Label>Bairro:</Form.Label>
-                            <Form.Control type="text" />
+                            <Col xs={9} md={5} lg={3}>
+                                <Form.Control type="text" />
+                            </Col>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="telefoneManual">
                             <Form.Label>Telefone:</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={telefone}
-                                onChange={handleChange}
-                                placeholder="(99) 99999-9999"
-                            />
+                            <Col xs={9} md={5} lg={3}>
+                                <Form.Control
+                                    type="text"
+                                    value={telefone}
+                                    onChange={handleChange}
+                                    placeholder="(99) 99999-9999"
+                                    className='w-75'
+                                />
+                            </Col>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="dataInicio">
                             <Form.Label>Data Início</Form.Label>
-                            <Form.Control
-                                type="date"
-                                value={dataInicio}
-                                onChange={(e) => setDataInicio(e.target.value)}
-                            />
+                            <Col xs={9} md={5} lg={3}>
+                                <Form.Control
+                                    type="date"
+                                    value={dataInicio}
+                                    onChange={(e) => setDataInicio(e.target.value)}
+                                    className='w-75'
+                                />
+                            </Col>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="horaInicio">
                             <Form.Label>Hora Início</Form.Label>
-                            <Form.Control
-                                type="time"
-                                value={horaInicio}
-                                onChange={(e) => setHoraInicio(e.target.value)}
-                            />
+                            <Col xs={9} md={5} lg={3}>
+                                <Form.Control
+                                    type="time"
+                                    value={horaInicio}
+                                    onChange={(e) => setHoraInicio(e.target.value)}
+                                    className='w-75'
+                                />
+                            </Col>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label>
-                                <h4>Brinquedos Selecionados</h4>
-                                <Button variant="primary" className="mb-3" onClick={() => setShowModal(true)}>
-                                    Adicionar Brinquedo
-                                </Button>
+                        <div className="mb-3">
+                            <h4>Brinquedos Selecionados</h4>
+                            <Button variant="primary" className="mb-3" onClick={() => setShowModal(true)}>
+                                Adicionar Brinquedos
+                            </Button>
 
-                                <Table striped bordered>
-                                    <thead>
+                            <Table striped bordered>
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Tempo de Uso (min)</th>
+                                        <th>Valor R$</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {selecionados.length === 0 ? (
                                         <tr>
-                                            <th>Nome</th>
-                                            <th>Tempo de Uso (min)</th>
-                                            <th>Ação</th>
+                                            <td colSpan="4" className="text-center text-muted">
+                                                Nenhum produto selecionado
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {selecionados.length === 0 ? (
-                                            <tr>
-                                                <td colSpan="3" className="text-center text-muted">
-                                                    Nenhum produto selecionado
+                                    ) : (
+                                        selecionados.map((p) => (
+                                            <tr key={p.id}>
+                                                <td>{p.nome}</td>
+                                                <td>
+                                                    <InputGroup size="sm">
+                                                        <Form.Control
+                                                            type="number"
+                                                            placeholder="Minutos"
+                                                            value={p.tempoUso}
+                                                            onChange={(e) => atualizarTempo(p.id, e.target.value)}
+                                                        />
+                                                    </InputGroup>
+                                                </td>
+                                                <td>
+                                                    <InputGroup size="sm" key={p.id} className="mb-2">
+                                                        <Form.Control
+                                                            type="text"
+                                                            required
+                                                            value={formatarParaBRL(p.valorTotal || 0)}
+                                                            onChange={(e) => {
+                                                                const apenasNumeros = e.target.value.replace(/[^\d]/g, "");
+                                                                const valor = parseFloat(apenasNumeros) / 100;
+
+                                                                atualizarValor(p.id, valor)
+                                                            }}
+                                                        />
+                                                    </InputGroup>
+                                                </td>
+                                                <td>
+                                                    <Button
+                                                        variant="danger"
+                                                        size="sm"
+                                                        onClick={() => removerProduto(p.id)}
+                                                    >
+                                                        Remover
+                                                    </Button>
                                                 </td>
                                             </tr>
-                                        ) : (
-                                            selecionados.map((p) => (
-                                                <tr key={p.id}>
-                                                    <td>{p.nome}</td>
-                                                    <td>
-                                                        <InputGroup size="sm">
-                                                            <Form.Control
-                                                                type="number"
-                                                                placeholder="Minutos"
-                                                                value={p.tempoUso}
-                                                                onChange={(e) => atualizarTempo(p.id, e.target.value)}
-                                                            />
-                                                        </InputGroup>
-                                                    </td>
-                                                    <td>
-                                                        <Button
-                                                            variant="danger"
-                                                            size="sm"
-                                                            onClick={() => removerProduto(p.id)}
-                                                        >
-                                                            Remover
-                                                        </Button>
-                                                    </td>
+                                        ))
+                                    )}
+                                </tbody>
+                            </Table>
+
+                            {selecionados.length > 0 && (
+                                <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <h5>
+                                        Total Geral:{" "}
+                                        <span className="text-success">{formatarParaBRL(calcularTotalGeral())}</span>
+                                    </h5>
+                                </div>
+                            )}
+
+
+
+                            {/* Modal com a lista de produtos */}
+                            <Modal
+                                show={showModal}
+                                onHide={() => setShowModal(false)}
+                                size="lg"
+                                centered
+                            >
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Selecionar Brinquedos</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    {carregando ? (
+                                        <div className="text-center p-3">
+                                            <Spinner animation="border" />
+                                            <div>Carregando Brinquedos...</div>
+                                        </div>
+                                    ) : (
+                                        <Table striped bordered hover>
+                                            <thead>
+                                                <tr>
+                                                    <th>Foto</th>
+                                                    <th>Nome</th>
+                                                    {/* <th>Valor Minuto</th> */}
+                                                    {/* <th>Estoque</th> */}
+                                                    <th>Ação</th>
                                                 </tr>
-                                            ))
-                                        )}
-                                    </tbody>
-                                </Table>
-
-
-
-                                {/* Modal com a lista de produtos */}
-                                <Modal
-                                    show={showModal}
-                                    onHide={() => setShowModal(false)}
-                                    size="lg"
-                                    centered
-                                >
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>Selecionar Produtos</Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                        {carregando ? (
-                                            <div className="text-center p-3">
-                                                <Spinner animation="border" />
-                                                <div>Carregando produtos...</div>
-                                            </div>
-                                        ) : (
-                                            <Table striped bordered hover>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Foto</th>
-                                                        <th>Nome</th>
-                                                        <th>Valor Minuto</th>
-                                                        {/* <th>Estoque</th> */}
-                                                        <th>Ação</th>
+                                            </thead>
+                                            <tbody >
+                                                {produtos.map((produto) => (
+                                                    <tr key={produto.id}>
+                                                        <td><img
+                                                            src={produto.fotoProduto ? `/imagens/produtos/${produto.fotoProduto}` : "/imagens/produtos/placeholder.png"} //REMOVER O LOCALHOST
+                                                            alt="Foto do Produto"
+                                                            style={{
+                                                                width: "80px",
+                                                                height: "80px",
+                                                                objectFit: "contain",
+                                                                borderRadius: 10,
+                                                                cursor: "pointer",
+                                                                border: "2px solid #ccc",
+                                                            }}
+                                                        /></td>
+                                                        <td>{produto.nome}</td>
+                                                        {/* <td>R$ {produto.precoVenda.toFixed(2)}</td> */}
+                                                        {/* <td>{produto.quantidadeEstoque}</td> */}
+                                                        <td>
+                                                            <Button
+                                                                variant="success"
+                                                                size="sm"
+                                                                onClick={() => adicionarProduto(produto)}
+                                                            >
+                                                                Adicionar
+                                                            </Button>
+                                                        </td>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {produtos.map((produto) => (
-                                                        <tr key={produto.id}>
-                                                            <td><img
-                                                                src={produto.fotoProduto ? `/imagens/produtos/${produto.fotoProduto}` : "/imagens/produtos/placeholder.png"} //REMOVER O LOCALHOST
-                                                                alt="Foto do Produto"
-                                                                style={{
-                                                                    width: "80px",
-                                                                    height: "80px",
-                                                                    objectFit: "contain",
-                                                                    borderRadius: 10,
-                                                                    cursor: "pointer",
-                                                                    border: "2px solid #ccc",
-                                                                }}
-                                                            /></td>
-                                                            <td>{produto.nome}</td>
-                                                            <td>R$ {produto.precoVenda.toFixed(2)}</td>
-                                                            {/* <td>{produto.quantidadeEstoque}</td> */}
-                                                            <td>
-                                                                <Button
-                                                                    variant="success"
-                                                                    size="sm"
-                                                                    onClick={() => adicionarProduto(produto)}
-                                                                >
-                                                                    Adicionar
-                                                                </Button>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </Table>
-                                        )}
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                        <Button variant="secondary" onClick={() => setShowModal(false)}>
-                                            Fechar
-                                        </Button>
-                                    </Modal.Footer>
-                                </Modal>
-                            </Form.Label>
-                        </Form.Group>
+                                                ))}
+                                            </tbody>
+                                        </Table>
+                                    )}
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                                        Fechar
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
+                        </div>
 
 
                     </Form>

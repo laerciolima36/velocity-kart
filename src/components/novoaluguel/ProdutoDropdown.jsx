@@ -38,8 +38,8 @@ function ProdutoDropdown({ informacoes, onSelect }) {
 
                             <div>
                                 <img
-                                    // src={info.fotoProduto ? `/imagens/produtos/${produto.fotoProduto}` : "/imagens/produtos/placeholder.png"} //REMOVER O LOCALHOST
-                                    src={info.fotoProduto} //REMOVER O LOCALHOST
+                                    src={info.fotoProduto ? `/imagens/produtos/${info.fotoProduto}` : "/imagens/produtos/placeholder.png"} //REMOVER O LOCALHOST
+                                    // src={info.fotoProduto} //REMOVER O LOCALHOST
                                     alt={info.nomeProduto}
                                     style={{
                                         width: "70px",
