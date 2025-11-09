@@ -1,5 +1,5 @@
 // ItemAluguel.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     Table,
     Button,
@@ -11,19 +11,39 @@ import {
 } from "react-bootstrap"; import Card from 'react-bootstrap/Card';
 import { listarProdutos } from '../CadastroProduto/ProdutoService';
 import SignaturePad from '../SignaturePad/SignaturePad';
+import { salvarContrato } from './ContratoService';
 
 
 const FormContrato = () => {
 
     const [telefone, setTelefone] = useState("");
-    const [horaInicio, setHoraInicio] = useState('');
 
     const [produtos, setProdutos] = useState([]);
     const [selecionados, setSelecionados] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [carregando, setCarregando] = useState(false);
+    const formRef = useRef();
 
     const [assinatura, setAssinatura] = useState(null);
+
+
+    const [form, setForm] = useState({
+        nomeContratante: "",
+        enderecoContratante: "",
+        numeroEndContratante: "",
+        bairroContratante: "",
+        telefoneContratante: telefone,
+        dataInicio: "",
+        horaInicio: ""
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
     const handleAssinatura = (imgBase64) => {
         setAssinatura(imgBase64);
@@ -51,17 +71,18 @@ const FormContrato = () => {
     // Carregar lista de produtos da API
     useEffect(() => {
         carregarProdutos();
+        console.log('teste');
     }, []);
 
     const adicionarProduto = (produto) => {
         if (selecionados.find((p) => p.id === produto.id)) return;
-        setSelecionados([...selecionados, { ...produto, tempoUso: "", valorTotal: 0 }]);
+        setSelecionados([...selecionados, { ...produto, tempoUso: 0, valor: 0 }]);
     };
 
     const atualizarTempo = (id, tempo) => {
         setSelecionados((prev) =>
             prev.map((p) => {
-                return p.id === id ? { ...p, tempoUso: tempo } : p;
+                return p.id === id ? { ...p, tempoUso: parseInt(tempo, 10) } : p;
             })
         );
     };
@@ -69,7 +90,7 @@ const FormContrato = () => {
     const atualizarValor = (id, novoValor) => {
         setSelecionados((prev) =>
             prev.map((p) =>
-                p.id === id ? { ...p, valorTotal: novoValor } : p
+                p.id === id ? { ...p, valor: novoValor } : p
             )
         );
     };
@@ -79,18 +100,48 @@ const FormContrato = () => {
     };
 
     const calcularTotalGeral = () => {
-        return selecionados.reduce((total, p) => total + (p.valorTotal || 0), 0);
+        return selecionados.reduce((total, p) => total + (p.valor || 0), 0);
     };
 
-    const enviar = async () => {
-        console.log("Produtos selecionados:", selecionados);
-        console.log("Assinatura base64:", assinatura);
-        // Exemplo:
-        // await axios.post("http://localhost:8080/api/uso", selecionados);
+    const enviar = async (e) => {
+        try {
+            e.preventDefault();
+
+            if (formRef.current && !formRef.current.checkValidity()) {
+                formRef.current.reportValidity(); // mostra os erros nativos do navegador
+                return;
+            }
+
+            // Monta o objeto final para o backend
+            const contratoParaEnvio = {
+                nomeContratante: form.nomeContratante,
+                enderecoContratante: form.enderecoContratante,
+                numeroEndContratante: form.numeroEndContratante,
+                bairroContratante: form.bairroContratante,
+                telefoneContratante: telefone,
+                dataInicio: form.dataInicio,
+                horaInicio: form.horaInicio,
+                assinatura: assinatura, // Base64
+                itens: selecionados.map((item) => ({
+                    produto: { id: item.id },
+                    tempoUso: item.tempoUso,
+                    valor: item.valor || 0,
+                    toleranciaMaxima: 15, // ou outro valor padrão, se quiser
+                })),
+            };
+
+            console.log("Objeto final enviado ao backend:", contratoParaEnvio);
+
+            await salvarContrato(contratoParaEnvio);
+            alert("Contrato salvo com sucesso!");
+        } catch (error) {
+            console.error("Erro ao salvar contrato:", error);
+            alert("Erro ao salvar contrato.", error);
+        }
     };
 
 
-    const handleChange = (e) => {
+    const handleChange2 = (e) => {
         const raw = e.target.value;
         const digits = raw.replace(/\D/g, "");
 
@@ -98,11 +149,6 @@ const FormContrato = () => {
         const limited = digits.substring(0, 11);
         setTelefone(formatBRPhone(limited));
     };
-
-    const [dataInicio, setDataInicio] = useState(() => {
-        const hoje = new Date();
-        return hoje.toISOString().split('T')[0];
-    });
 
     return (
         <div className="container-fluid p-4">
@@ -125,35 +171,58 @@ const FormContrato = () => {
             <Card>
                 <Card.Header>Contrato: </Card.Header>
                 <Card.Body className='p-4'>
-                    <Form>
-                        <Form.Group className="mb-3">
+                    <Form ref={formRef}>
+                        {/* <Form.Group className="mb-3">
                             <Form.Label>Número do Contrato:</Form.Label>
                             <Col xs={8} md={6} lg={3}>
                                 <Form.Control type="number" />
                             </Col>
-                        </Form.Group>
+                        </Form.Group> */}
                         <Form.Group className="mb-3">
                             <Form.Label>Nome do Contratante:</Form.Label>
                             <Col xs={9} md={5} lg={7}>
-                                <Form.Control type="text" />
+                                <Form.Control
+                                    type="text"
+                                    name='nomeContratante'
+                                    value={form.nomeContratante}
+                                    onChange={handleChange}
+                                    required />
                             </Col>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <Form.Label>Endereço:</Form.Label>
                             <Col xs={9} md={5} lg={7}>
-                                <Form.Control type="text" lg={3} />
+                                <Form.Control
+                                    type="text"
+                                    name='enderecoContratante'
+                                    value={form.enderecoContratante}
+                                    onChange={handleChange}
+                                    required
+                                    lg={3} />
                             </Col>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <Form.Label>Número:</Form.Label>
                             <Col xs={8} md={6} lg={3}>
-                                <Form.Control type="number" />
+                                <Form.Control
+                                    type="number"
+                                    name='numeroEndContratante'
+                                    value={form.numeroEndContratante}
+                                    onChange={handleChange}
+                                    required
+                                />
                             </Col>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <Form.Label>Bairro:</Form.Label>
                             <Col xs={9} md={5} lg={3}>
-                                <Form.Control type="text" />
+                                <Form.Control
+                                    type="text"
+                                    name='bairroContratante'
+                                    value={form.bairroContratante}
+                                    onChange={handleChange}
+                                    required
+                                />
                             </Col>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="telefoneManual">
@@ -162,7 +231,7 @@ const FormContrato = () => {
                                 <Form.Control
                                     type="text"
                                     value={telefone}
-                                    onChange={handleChange}
+                                    onChange={handleChange2}
                                     placeholder="(99) 99999-9999"
                                     className='w-75'
                                 />
@@ -173,8 +242,10 @@ const FormContrato = () => {
                             <Col xs={9} md={5} lg={3}>
                                 <Form.Control
                                     type="date"
-                                    value={dataInicio}
-                                    onChange={(e) => setDataInicio(e.target.value)}
+                                    name='dataInicio'
+                                    value={form.dataInicio}
+                                    onChange={handleChange}
+                                    required
                                     className='w-75'
                                 />
                             </Col>
@@ -184,8 +255,10 @@ const FormContrato = () => {
                             <Col xs={9} md={5} lg={3}>
                                 <Form.Control
                                     type="time"
-                                    value={horaInicio}
-                                    onChange={(e) => setHoraInicio(e.target.value)}
+                                    name='horaInicio'
+                                    value={form.horaInicio}
+                                    onChange={handleChange}
+                                    required
                                     className='w-75'
                                 />
                             </Col>
@@ -231,7 +304,7 @@ const FormContrato = () => {
                                                         <Form.Control
                                                             type="text"
                                                             required
-                                                            value={formatarParaBRL(p.valorTotal || 0)}
+                                                            value={formatarParaBRL(p.valor || 0)}
                                                             onChange={(e) => {
                                                                 const apenasNumeros = e.target.value.replace(/[^\d]/g, "");
                                                                 const valor = parseFloat(apenasNumeros) / 100;
@@ -273,7 +346,7 @@ const FormContrato = () => {
                             </div>
 
                             {assinatura && (
-                                <div className="mt-3">
+                                <div className="mt-3 text-center">
                                     <h6>Pré-visualização da Assinatura:</h6>
                                     <img
                                         src={assinatura}

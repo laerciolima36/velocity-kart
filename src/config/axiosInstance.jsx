@@ -10,16 +10,8 @@ const api = axios.create({
   },
 });
 
-export const authApi = axios.create({
-  baseURL: BASE_URL,
-  // baseURL: "",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
 // Interceptor para adicionar o token JWT em cada request
-authApi.interceptors.request.use(
+api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('jwtToken');
     if (token) {
@@ -34,7 +26,7 @@ authApi.interceptors.request.use(
 );
 
 // Interceptor para tratar respostas com erro de autenticação
-authApi.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response &&

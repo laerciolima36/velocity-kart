@@ -13,8 +13,9 @@ const SignaturePad = ({ onSave }) => {
 
   const salvarAssinatura = () => {
     if (!sigCanvas.current.isEmpty()) {
-      const assinatura = sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
+      const assinatura = sigCanvas.current.toDataURL("image/png");
       onSave(assinatura); // Retorna a imagem em base64 para o componente pai
+      alert("Assinatura salva com sucesso!");
     } else {
       alert("Por favor, faça a assinatura antes de salvar.");
     }
