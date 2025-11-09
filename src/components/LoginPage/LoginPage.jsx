@@ -89,7 +89,7 @@ const LoginPage = () => {
             </div>
             <button type="submit" className="btn btn-primary w-100">Entrar</button>
             <div className="text-center mt-3" style={{ fontSize: '12px' }}>
-              <abel>AutomationCode - 2026 © </abel>
+              <label>AutomationCode - 2026 © </label>
               <a href="https://www.automationcode.com.br" target="_blank" rel="noopener noreferrer">www.automationcode.com.br</a>
             </div>
           </form>

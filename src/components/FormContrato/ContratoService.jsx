@@ -16,11 +16,9 @@ export const salvarContrato = async (contrato) => {
 };
 
 
-
-// Listar todos os produtos
-export const listarProdutos = async () => {
+export const listarContratos = async () => {
     try {
-        const response = await api.get("/api/produto");
+        const response = await api.get("/api/contratos");
         console.log("Response data:", response.data);
         return response.data;
     } catch (error) {
@@ -28,10 +26,10 @@ export const listarProdutos = async () => {
     }
 };
 
-// Buscar produto por ID
-export const buscarProdutoPorId = async (id) => {
+export const listarContratosFinalizados = async () => {
     try {
-        const response = await api.get(`/api/produto/${id}`);
+        const response = await api.get("/api/contratos/finalizados");
+        console.log("Response data:", response.data);
         return response.data;
     } catch (error) {
         handleError(error);
@@ -39,44 +37,17 @@ export const buscarProdutoPorId = async (id) => {
 };
 
 
-// Atualizar produto
-export const atualizarProduto = async (id, produto) => {
+
+export const iniciarContrato = async (id) => {
     try {
-        const response = await api.put(`/api/produto/${id}`, produto);
+        const response = await api.post(`/api/contratos/${id}/iniciar`);
         return response.data;
     } catch (error) {
         handleError(error);
     }
 };
 
-// Deletar produto
-export const deletarProduto = async (id) => {
-    try {
-        await api.delete(`/api/produto/${id}`);
-        return true;
-    } catch (error) {
-        handleError(error);
-    }
-};
-
-// Upload da imagem do produto
-export const uploadFotoProduto = async (id, file) => {
-    try {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const response = await api.put(`/api/produto/uploadFotoProduto/${id}`, formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-
-        return response.data;
-    } catch (error) {
-        handleError(error);
-    }
-};
 
 export default {
-    salvarContrato
+    salvarContrato, listarContratos, iniciarContrato
 };

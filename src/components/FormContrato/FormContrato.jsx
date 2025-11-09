@@ -134,10 +134,27 @@ const FormContrato = () => {
 
             await salvarContrato(contratoParaEnvio);
             alert("Contrato salvo com sucesso!");
+            limparFormulario();
+            window.location.reload();
         } catch (error) {
             console.error("Erro ao salvar contrato:", error);
             alert("Erro ao salvar contrato.", error);
         }
+    };
+
+    const limparFormulario = () => {
+        setForm({
+            nomeContratante: "",
+            enderecoContratante: "",
+            numeroEndContratante: "",
+            bairroContratante: "",
+            telefoneContratante: "",
+            dataInicio: "",
+            horaInicio: ""
+        });
+        setTelefone("");
+        setSelecionados([]);
+        setAssinatura(null);
     };
 
 
@@ -151,25 +168,10 @@ const FormContrato = () => {
     };
 
     return (
-        <div className="container-fluid p-4">
-
-            <Accordion defaultActiveKey="0" className='mb-4'>
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header>Contratos</Accordion.Header>
-                    <Accordion.Body>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                        culpa qui officia deserunt mollit anim id est laborum.
-                    </Accordion.Body>
-                </Accordion.Item>
-            </Accordion>
+        <div className="container-fluid p-2">
 
             <Card>
-                <Card.Header>Contrato: </Card.Header>
+                <Card.Header>Novo Contrato: </Card.Header>
                 <Card.Body className='p-4'>
                     <Form ref={formRef}>
                         {/* <Form.Group className="mb-3">
