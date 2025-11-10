@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const BASE_URL = "http://192.168.0.7";
+export const BASE_URL = "";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -13,6 +13,8 @@ const api = axios.create({
 // Interceptor para adicionar o token JWT em cada request
 api.interceptors.request.use(
   (config) => {
+    console.log("Interceptor de requisição acionado");
+    console.log("Rota requisitada:", config.baseURL + config.url);
     const token = localStorage.getItem('jwtToken');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
