@@ -90,6 +90,11 @@ function SimpleModal({ show, onClose }) {
             return;
         }
 
+        if (atendente.trim() === '') {
+            setErro('O nome do atendente é obrigatório.');
+            return;
+        }
+
         if (!produtoId) {
             setErro('Selecione um brinquedo.');
             return;
@@ -185,6 +190,7 @@ function SimpleModal({ show, onClose }) {
                                 value={nomeResponsavel}
                                 onChange={(e) => setNomeResponsavel(e.target.value)}
                                 autoFocus
+                                required
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -194,6 +200,7 @@ function SimpleModal({ show, onClose }) {
                                 type="text"
                                 value={nomeCrianca}
                                 onChange={(e) => setNomeCrianca(e.target.value)}
+                                required
                             />
                         </Form.Group>
                         <Form.Group controlId="exampleForm.ControlInput1">
@@ -274,6 +281,7 @@ function SimpleModal({ show, onClose }) {
                                 type="text"
                                 value={atendente}
                                 onChange={(e) => setAtendente(e.target.value)}
+                                required
                             />
                         </Form.Group>
 
