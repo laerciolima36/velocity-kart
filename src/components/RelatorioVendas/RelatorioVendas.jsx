@@ -44,7 +44,7 @@ const RelatorioVendas = () => {
     });
 
     const handleDeletar = async (id) => {
-        if (window.confirm("Tem certeza que deseja excluir este produto?")) {
+        if (window.confirm("Tem certeza que deseja excluir este aluguel?")) {
             try {
                 setLoad(true);
                 await deletarVenda(id);
