@@ -35,6 +35,15 @@ export const setFlagFalse = async (id) => {
   }
 };
 
+export const reproduzirAudioFinal = async (id) => {
+  try {
+    const response = await api.post(`/api/aluguel/audiofinal/${id}`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 export const cancelarAluguel = async (id) => {
   try {
     const response = await api.post(`/api/aluguel/${id}/finalizar`);
@@ -55,4 +64,4 @@ export const listarAlugueisFinalizados = async () => {
   }
 };
 
-export default { pausarById, retomarById, listarAlugueisFinalizados, setFlagFalse };
+export default { pausarById, retomarById, listarAlugueisFinalizados, setFlagFalse, reproduzirAudioFinal };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Form, Button, Table, Accordion, Modal, OverlayTrigger, Tooltip as BootstrapTooltip, Spinner } from "react-bootstrap";
-import { buscarPorPeriodo } from "./VendaService";
+import { buscarPorPeriodo, deletarVenda } from "./VendaService";
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import Load from '../Load/Load';
@@ -42,6 +42,19 @@ const RelatorioVendas = () => {
         const hoje = new Date();
         return hoje.toISOString().split('T')[0];
     });
+
+    const handleDeletar = async (id) => {
+        if (window.confirm("Tem certeza que deseja excluir este produto?")) {
+            try {
+                setLoad(true);
+                await deletarVenda(id);
+                buscarVendas();
+                setLoad(false);
+            } catch (error) {
+                setErro(error);
+            }
+        }
+    };
 
 
     const [vendas, setVendas] = useState([]); // Estado para armazenar as vendas trazidas pela API
@@ -412,6 +425,7 @@ const RelatorioVendas = () => {
                                                     <th>Total</th>
                                                     <th>Forma Pagamento</th>
                                                     <th>Detalhes</th>
+                                                    <th>Ações</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -440,6 +454,9 @@ const RelatorioVendas = () => {
                                                                 Ver detalhes
                                                             </Button>
                                                             {/* </OverlayTrigger> */}
+                                                        </td>
+                                                        <td>
+                                                            <Button size="sm" variant="danger" onClick={() => handleDeletar(venda.id)}>Excluir</Button>
                                                         </td>
                                                     </tr>
                                                 ))}

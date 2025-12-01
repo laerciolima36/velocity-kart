@@ -1,6 +1,6 @@
 // ItemAluguel.jsx
 import React, { useState } from 'react';
-import { pausarById, retomarById, setFlagFalse, cancelarAluguel } from './ItemAluguelService';
+import { pausarById, retomarById, setFlagFalse, cancelarAluguel, reproduzirAudioFinal } from './ItemAluguelService';
 import './css/style.css';
 import CountdownCircle from '../itemaluguel/CountdownCircle';
 import { FaPlay, FaPause } from "react-icons/fa";
@@ -39,6 +39,10 @@ const ItemAluguel = ({ aluguel, carregarAlugueisFinalizados }) => {
         console.log(aluguel.pausado ? 'Retomar' : 'Pausar');
     };
 
+    const handleTogglePlayAudio = () => {
+        reproduzirAudioFinal(aluguel.id);
+    };
+
     const handleSetFlagView = async () => {
         await setFlagFalse(aluguel.id);
         carregarAlugueisFinalizados();
@@ -63,17 +67,27 @@ const ItemAluguel = ({ aluguel, carregarAlugueisFinalizados }) => {
             <div className='text-white justify-content-between align-items-center d-flex'>
                 👫 {aluguel.nomeResponsavel}
                 {aluguel.flagView ? (
-                    <IoIosCloseCircle
-                        size={24}
-                        color="#ff0000ff"
-                        style={{ transition: "transform 0.1s" }}
-                        onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
-                        onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
-                        onTouchStart={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
-                        onTouchEnd={(e) => (e.currentTarget.style.transform = "scale(1)")}
-                        title="Aluguel finalizado"
-                        onClick={handleSetFlagView}
-                    />
+                    <div>
+                        <BsPlayCircle size={24}
+                            color="#f6ff00ff"
+                            style={{ transition: "transform 0.1s", marginRight: 10 }}
+                            onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+                            onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            onTouchStart={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+                            onTouchEnd={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            onClick={handleTogglePlayAudio} />
+                        <IoIosCloseCircle
+                            size={24}
+                            color="#ff0000ff"
+                            style={{ transition: "transform 0.1s" }}
+                            onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+                            onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            onTouchStart={(e) => (e.currentTarget.style.transform = "scale(0.9)")}
+                            onTouchEnd={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                            title="Aluguel finalizado"
+                            onClick={handleSetFlagView}
+                        />
+                        </div>
                 ) :
                     aluguel.pausado ?
                         <BsPlayCircle size={24}

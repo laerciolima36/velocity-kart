@@ -32,3 +32,13 @@ export const buscarPorPeriodo = async (dataInicio, dataFim) => {
     console.error('Erro ao buscar vendas', error);
   }
 };
+
+// Deletar venda
+export const deletarVenda = async (id) => {
+  try {
+    await api.delete(`/api/vendas/${id}`);
+    return true;
+  } catch (error) {
+    handleError(error);
+  }
+};
