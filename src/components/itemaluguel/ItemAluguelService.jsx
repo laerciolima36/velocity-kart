@@ -57,10 +57,16 @@ export const cancelarAluguel = async (id) => {
 export const listarAlugueisFinalizados = async () => {
   try {
     const response = await api.get("/api/aluguel/finalizados");
-    console.log("Response data:", response.data);
+
+    if (!Array.isArray(response.data)) {
+      console.error("Resposta inesperada da API:", response.data);
+      return [];
+    }
+
     return response.data;
   } catch (error) {
     handleError(error);
+    return []; // 🔥 essencial
   }
 };
 

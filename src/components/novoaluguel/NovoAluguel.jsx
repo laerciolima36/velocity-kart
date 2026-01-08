@@ -39,18 +39,18 @@ function FloatingAddButton({ onClick }) {
         position: 'fixed',
         right: 20,
         bottom: 75,
-        width: 56,
-        height: 56,
+        width: 60,
+        height: 60,
         borderRadius: '50%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: 28,
-        boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
+        boxShadow: '0 6px 18px rgba(214, 0, 252, 0.15)',
         zIndex: 1050,
     };
     return (
-        <Button variant="dark" style={fabStyle} onClick={onClick} aria-label="Adicionar">
+        <Button variant="dark" style={fabStyle} onClick={onClick} aria-label="Adicionar" className='border border-info'>
             +
         </Button>
     );

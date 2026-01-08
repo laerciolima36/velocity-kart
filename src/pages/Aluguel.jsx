@@ -11,6 +11,8 @@ import { FaInfoCircle } from "react-icons/fa";
 import { listarAlugueisFinalizados, setFlagFalse } from '../components/itemaluguel/ItemAluguelService';
 import BottomMenu from '../components/BottomMenu/BottomMenu';
 import { IoIosAddCircle } from "react-icons/io";
+import NewFila from './NewFila';
+import ItemFila from '../components/ItemFila/ItemFila';
 
 
 const Aluguel = ({ tamanhox }) => {
@@ -36,6 +38,9 @@ const Aluguel = ({ tamanhox }) => {
     useEffect(() => {
         carregarAlugueisFinalizados();
     }, [alugueis.length]);
+
+    const existeFila = alugueis?.some(aluguel => aluguel.estado === 'fila');
+    const existeRodando = alugueis?.some(aluguel => aluguel.estado === 'iniciado' || aluguel.estado === 'pausado');
 
     return (
         <div >
@@ -73,31 +78,81 @@ const Aluguel = ({ tamanhox }) => {
             <InfoAluguel show={showInfo} onHide={() => setShowInfo(false)} />
 
             <Container>
-                <Row className='mt-4'>{
-                    alugueisFinalizados && alugueisFinalizados.map((aluguel) => (
-                        <Col key={aluguel.id} xs={6} sm={4} md={4} lg={3} className="mb-4">
-                            {/* <div style={{ backgroundColor: "red", width: "100%"}}>ITEM ALUGUEL</div> */}
-                            <ItemAluguel key={aluguel.id} aluguel={aluguel} carregarAlugueisFinalizados={carregarAlugueisFinalizados} />
-                        </Col>
-                    ))
-                }
+                <Row>
+                    <Col md={9}>
+                        <Row className='m-2'>
+                            {alugueisFinalizados.length > 0 &&
+                                <div className='mt-3 text-center mb-2 text-white border-bottom border-info'>
+                                    <h5>Finalizados</h5>
+                                </div>
+                            }
+                            {
+                                alugueisFinalizados && alugueisFinalizados.map((aluguel) => (
+                                    <Col key={aluguel.id} xs={6} sm={4} md={4} lg={3} className="mb-2 p-0">
+                                        <ItemAluguel key={aluguel.id} aluguel={aluguel} carregarAlugueisFinalizados={carregarAlugueisFinalizados} />
+                                    </Col>
+                                ))
+                            }
+                        </Row>
+                        {!error && alugueis.length === 0 ? (
+                            <div style={{ margin: '20px 0', textAlign: 'center', color: 'white', marginTop: '150px' }}>
+                                Toque no <IoIosAddCircle style={{ fontSize: "24px" }} /> para registrar um novo aluguel
+                            </div>
+                        ) : (
+                            <Row className='m-2'>
+                                {existeRodando &&
+                                    <div className='mt-3 text-center mb-2 text-white border-bottom border-info'>
+                                        <h5>Em Andamento</h5>
+                                    </div>
+                                }
+                                {
+                                    alugueis?.length > 0 && alugueis.map((aluguel) => (
+                                        aluguel.estado !== 'fila' ? (
+                                            <Col key={aluguel.id} xs={6} sm={4} md={4} lg={3} className="mb-2 p-0">
+                                                <ItemAluguel aluguel={aluguel} />
+                                            </Col>
+                                        ) : (
+                                            null
+                                        )
+                                    ))
+                                }
+                            </Row>
+                        )
+                        }
+                    </Col>
+
+
+                    <Col md={3} className='ps-4 pe-4'>
+                        <Row className='mb-4'>
+                            {existeFila &&
+                                <div className='mt-3 text-center mb-2 text-white '>
+                                    <h5>Aguardando para Iniciar</h5>
+                                </div>
+                            }
+                            <Container className='bg-dark rounded text-white mb-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+                                {alugueis?.length > 0 && alugueis.map((aluguel) =>
+                                (
+                                    aluguel.estado === 'fila' ? (
+                                        <Row>
+                                            <ItemFila aluguel={aluguel} />
+                                        </Row>
+                                    ) : (
+                                        null
+                                    )
+                                ))
+                                }
+
+                            </Container>
+                        </Row>
+                        <Row className='mb-6'>
+                            <NewFila />
+                        </Row>
+                        <Row className='mb-6'>
+                            <div style={{ height: '100px' }}></div>
+                            {/* para deixar espaco em baixo */}
+                        </Row>
+                    </Col>
                 </Row>
-                {!error && alugueis.length === 0 ? (
-                    <div style={{ margin: '20px 0', textAlign: 'center', color: 'white', marginTop: '150px' }}>
-                        Toque no <IoIosAddCircle style={{fontSize: "24px"}}/> para registrar um novo aluguel
-                    </div>
-                ) : (
-                    <Row className='mt-4'>{
-                        alugueis.map((aluguel) => (
-                            <Col key={aluguel.id} xs={6} sm={4} md={4} lg={3} className="mb-4">
-                                {/* <div style={{ backgroundColor: "red", width: "100%"}}>ITEM ALUGUEL</div> */}
-                                <ItemAluguel key={aluguel.id} aluguel={aluguel} />
-                            </Col>
-                        ))
-                    }
-                    </Row>
-                )
-                }
             </Container>
 
             <NovoAluguel />
@@ -115,7 +170,14 @@ const Aluguel = ({ tamanhox }) => {
                 )
             }
 
-            <BottomMenu />
+            <Row className='mb-6'>
+                <div style={{ height: '100px' }}></div>
+                {/* para deixar espaco em baixo */}
+            </Row>
+
+            <div className='pt-4'>
+                <BottomMenu />
+            </div>
         </div >
     );
 };

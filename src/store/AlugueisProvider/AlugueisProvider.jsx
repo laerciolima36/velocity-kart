@@ -19,7 +19,7 @@ export const AlugueisProvider = ({ children }) => {
             eventSource.onmessage = (e) => {
                 const data = JSON.parse(e.data);
                 setAlugueis(data);
-                // console.log("Dados recebidos:", data);
+                console.log("Dados recebidos stream alugueis:", data);
                 setError(null);
             };
 

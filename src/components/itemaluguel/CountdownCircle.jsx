@@ -24,7 +24,7 @@ const CountdownCircle = ({ remainingSeconds, totalSeconds, pausado, flagView }) 
   }
 
   return (
-    <div style={{ width: 85, height: 85 }}>
+    <div style={{ width: 70, height: 70 }}>
       <CircularProgressbar
         value={percentage}
         text={flagView ? "Fim" : formatTime(remainingSeconds)}

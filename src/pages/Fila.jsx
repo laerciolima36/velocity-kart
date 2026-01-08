@@ -103,6 +103,10 @@ const Fila = () => {
                     Erro: {error}
                 </Alert>
             )}
+            <Row className='mb-6'>
+                <div style={{ height: '100px' }}></div>
+                {/* para deixar espaco em baixo */}
+            </Row>
 
             <BottomMenu />
         </div>

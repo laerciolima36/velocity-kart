@@ -60,10 +60,7 @@ const ItemAluguel = ({ aluguel, carregarAlugueisFinalizados }) => {
     };
 
     return (
-        <div className='bg-dark p-3 rounded'>
-            <div>
-
-            </div>
+        <div className='bg-dark p-3 rounded me-2' style={{fontSize: '14px'}}>
             <div className='text-white justify-content-between align-items-center d-flex'>
                 👫 {aluguel.nomeResponsavel}
                 {aluguel.flagView ? (
@@ -114,17 +111,15 @@ const ItemAluguel = ({ aluguel, carregarAlugueisFinalizados }) => {
             <div className='text-white'>
                 👶 {aluguel.nomeCrianca}
             </div>
-            <div className='mt-4 text-center justify-content-center align-items-center d-flex flex-column'>
+            <div className='mt-2 mb-3 text-center justify-content-center align-items-center d-flex flex-column'>
                 <CountdownCircle remainingSeconds={aluguel.tempoRestante} totalSeconds={aluguel.tempoEscolhido * 60} pausado={aluguel.pausado} flagView={aluguel.flagView} />
             </div>
-            <div className='text-end justify-content-end align-items-end d-flex flex-column mb-4'>
-
-            </div>
-            <div className='text-secondary text-center justify-content-center align-items-center d-flex flex-column mb-2' style={{ fontSize: '12px' }}>
+            <div className='text-secondary text-center justify-content-center align-items-center d-flex flex-column' style={{ fontSize: '12px' }}>
                 🕑 {formatDateTime(aluguel.inicio)} - {aluguel.tempoEscolhido} min
             </div>
             <div className='text-secondary text-center justify-content-center align-items-center d-flex flex-column' style={{ fontSize: '12px' }}>
-                🚗 {aluguel.produto.nome} 💰 {aluguel.pago ? "Pago" : "Falta Pagar"}
+                🚗 {aluguel.produto.nome} <br></br>
+                💰 {aluguel.pago ? "Pago" : "Falta Pagar"}
             </div>
             {isLoggedIn &&
                 <div className='mt-4 text-secondary text-center justify-content-center align-items-center d-flex flex-column' style={{ fontSize: '12px' }}>

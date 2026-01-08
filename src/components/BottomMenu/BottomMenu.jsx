@@ -14,7 +14,7 @@ function BottomMenu() {
   const location = useLocation();
 
   return (
-    <nav className="navbar fixed-bottom bg-dark border-top border-secondary p-0">
+    <nav className="navbar fixed-bottom bg-dark border-top border-secondary p-0 mt-4">
       <div className="d-flex w-100 text-center" style={{ height: "60px" }}>
         {/* Botão Aluguéis */}
         <div
